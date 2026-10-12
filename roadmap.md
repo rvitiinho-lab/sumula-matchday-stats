@@ -1,7 +1,8 @@
 # Súmula FC
-- [ ] Concluir Início e entrada após login.
-- [ ] Concluir criação, presença e montagem dos times.
-- [ ] Concluir partida ao vivo e registro de lances.
-- [ ] Concluir avaliação, resultados e compartilhamento.
-- [ ] Concluir perfil e saída.
-- [ ] Testar navegação e fluxo autenticado.
+- [x] Concluir Início e entrada após login.
+- [x] Concluir criação, presença e montagem dos times.
+- [x] Concluir partida ao vivo e registro de lances.
+- [x] Concluir avaliação, resultados e compartilhamento.
+- [x] Concluir perfil e saída.
+- [x] Testar navegação e fluxo autenticado.
+- [ ] Verificar votos entre atletas diferentes — depende de um segundo atleta cadastrado; hoje há apenas uma conta.
