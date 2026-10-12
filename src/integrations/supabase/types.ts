@@ -14,29 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      match_events: {
+        Row: {
+          created_at: string
+          id: string
+          match_id: string
+          minute: number
+          player_id: string
+          team: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_id: string
+          minute?: number
+          player_id: string
+          team: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_id?: string
+          minute?: number
+          player_id?: string
+          team?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_events_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_events_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_players: {
         Row: {
           assists: number | null
+          fouls_committed: number
+          fouls_suffered: number
           goals: number | null
           match_id: string
           player_id: string
+          presence: string
           queue_position: number
+          saves: number
+          shots_on_goal: number
+          tackles: number
           team: string | null
         }
         Insert: {
           assists?: number | null
+          fouls_committed?: number
+          fouls_suffered?: number
           goals?: number | null
           match_id: string
           player_id: string
+          presence?: string
           queue_position: number
+          saves?: number
+          shots_on_goal?: number
+          tackles?: number
           team?: string | null
         }
         Update: {
           assists?: number | null
+          fouls_committed?: number
+          fouls_suffered?: number
           goals?: number | null
           match_id?: string
           player_id?: string
+          presence?: string
           queue_position?: number
+          saves?: number
+          shots_on_goal?: number
+          tackles?: number
           team?: string | null
         }
         Relationships: [
@@ -56,36 +119,137 @@ export type Database = {
           },
         ]
       }
+      match_ratings: {
+        Row: {
+          match_id: string
+          rated_id: string
+          rater_id: string
+          score: number
+        }
+        Insert: {
+          match_id: string
+          rated_id: string
+          rater_id: string
+          score: number
+        }
+        Update: {
+          match_id?: string
+          rated_id?: string
+          rater_id?: string
+          score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_ratings_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_ratings_rated_id_fkey"
+            columns: ["rated_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_ratings_rater_id_fkey"
+            columns: ["rater_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_votes: {
+        Row: {
+          category: string
+          match_id: string
+          voted_id: string
+          voter_id: string
+        }
+        Insert: {
+          category: string
+          match_id: string
+          voted_id: string
+          voter_id: string
+        }
+        Update: {
+          category?: string
+          match_id?: string
+          voted_id?: string
+          voter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_votes_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_votes_voted_id_fkey"
+            columns: ["voted_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_votes_voter_id_fkey"
+            columns: ["voter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       matches: {
         Row: {
           created_at: string | null
           creator_id: string | null
+          finished_at: string | null
           id: string
+          location: string | null
           modality: string
+          scheduled_at: string | null
           score_team_a: number | null
           score_team_b: number | null
+          started_at: string | null
           status: string | null
           title: string | null
+          voting_closed: boolean
         }
         Insert: {
           created_at?: string | null
           creator_id?: string | null
+          finished_at?: string | null
           id?: string
+          location?: string | null
           modality: string
+          scheduled_at?: string | null
           score_team_a?: number | null
           score_team_b?: number | null
+          started_at?: string | null
           status?: string | null
           title?: string | null
+          voting_closed?: boolean
         }
         Update: {
           created_at?: string | null
           creator_id?: string | null
+          finished_at?: string | null
           id?: string
+          location?: string | null
           modality?: string
+          scheduled_at?: string | null
           score_team_a?: number | null
           score_team_b?: number | null
+          started_at?: string | null
           status?: string | null
           title?: string | null
+          voting_closed?: boolean
         }
         Relationships: [
           {
@@ -104,6 +268,7 @@ export type Database = {
           id: string
           nome: string
           overall_rating: number | null
+          position: string
           quote: string | null
         }
         Insert: {
@@ -112,6 +277,7 @@ export type Database = {
           id: string
           nome: string
           overall_rating?: number | null
+          position?: string
           quote?: string | null
         }
         Update: {
@@ -120,6 +286,7 @@ export type Database = {
           id?: string
           nome?: string
           overall_rating?: number | null
+          position?: string
           quote?: string | null
         }
         Relationships: []
@@ -129,7 +296,35 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      close_voting: { Args: { _match: string }; Returns: undefined }
       is_match_creator: { Args: { _match: string }; Returns: boolean }
+      is_match_player: {
+        Args: { _match: string; _user: string }
+        Returns: boolean
+      }
+      match_results: {
+        Args: { _match: string }
+        Returns: {
+          avg_score: number
+          bagre: number
+          craque: number
+          muralha: number
+          player_id: string
+          raters: number
+        }[]
+      }
+      match_voting_open: { Args: { _match: string }; Returns: boolean }
+      match_voting_progress: {
+        Args: { _match: string }
+        Returns: {
+          eligible: number
+          voters: number
+        }[]
+      }
+      set_presence: {
+        Args: { _match: string; _presence: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
