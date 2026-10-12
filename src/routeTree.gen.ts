@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedResultsRouteImport } from './routes/_authenticated/results'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as LobbyMatchIdRouteImport } from './routes/lobby.$matchId'
 import { Route as AuthenticatedMatchCreateRouteImport } from './routes/_authenticated/match.create'
@@ -30,6 +33,21 @@ const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedResultsRoute = AuthenticatedResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
@@ -56,6 +74,9 @@ const MatchSummaryMatchIdRoute = MatchSummaryMatchIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/home': typeof AuthenticatedHomeRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/results': typeof AuthenticatedResultsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
@@ -64,6 +85,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/home': typeof AuthenticatedHomeRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/results': typeof AuthenticatedResultsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
@@ -74,6 +98,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/results': typeof AuthenticatedResultsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/_authenticated/match/create': typeof AuthenticatedMatchCreateRoute
@@ -84,6 +111,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/home'
+    | '/profile'
+    | '/results'
     | '/auth/register'
     | '/lobby/$matchId'
     | '/match/create'
@@ -92,6 +122,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/home'
+    | '/profile'
+    | '/results'
     | '/auth/register'
     | '/lobby/$matchId'
     | '/match/create'
@@ -101,6 +134,9 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/home'
+    | '/_authenticated/profile'
+    | '/_authenticated/results'
     | '/auth/register'
     | '/lobby/$matchId'
     | '/_authenticated/match/create'
@@ -138,6 +174,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/home': {
+      id: '/_authenticated/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthenticatedHomeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/results': {
+      id: '/_authenticated/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof AuthenticatedResultsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/auth/register': {
       id: '/auth/register'
       path: '/register'
@@ -170,10 +227,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedResultsRoute: typeof AuthenticatedResultsRoute
   AuthenticatedMatchCreateRoute: typeof AuthenticatedMatchCreateRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedResultsRoute: AuthenticatedResultsRoute,
   AuthenticatedMatchCreateRoute: AuthenticatedMatchCreateRoute,
 }
 
