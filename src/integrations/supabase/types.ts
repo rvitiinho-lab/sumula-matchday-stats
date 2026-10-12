@@ -14,13 +14,122 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      match_players: {
+        Row: {
+          assists: number | null
+          goals: number | null
+          match_id: string
+          player_id: string
+          queue_position: number
+          team: string | null
+        }
+        Insert: {
+          assists?: number | null
+          goals?: number | null
+          match_id: string
+          player_id: string
+          queue_position: number
+          team?: string | null
+        }
+        Update: {
+          assists?: number | null
+          goals?: number | null
+          match_id?: string
+          player_id?: string
+          queue_position?: number
+          team?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_players_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_players_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matches: {
+        Row: {
+          created_at: string | null
+          creator_id: string | null
+          id: string
+          modality: string
+          score_team_a: number | null
+          score_team_b: number | null
+          status: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          creator_id?: string | null
+          id?: string
+          modality: string
+          score_team_a?: number | null
+          score_team_b?: number | null
+          status?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          creator_id?: string | null
+          id?: string
+          modality?: string
+          score_team_a?: number | null
+          score_team_b?: number | null
+          status?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          apelido: string
+          created_at: string | null
+          id: string
+          nome: string
+          overall_rating: number | null
+          quote: string | null
+        }
+        Insert: {
+          apelido: string
+          created_at?: string | null
+          id: string
+          nome: string
+          overall_rating?: number | null
+          quote?: string | null
+        }
+        Update: {
+          apelido?: string
+          created_at?: string | null
+          id?: string
+          nome?: string
+          overall_rating?: number | null
+          quote?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_match_creator: { Args: { _match: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
