@@ -11,3 +11,6 @@
 
 - Team draw logic lives in src/lib/draw.ts as a pure function with tests; why: keeps the balancing rule testable apart from the UI.
 - Data access is client-side via the browser backend client with row-level security (creator-only updates); why: no server secrets needed.
+- Internal screens use shared TanStack Query options with loader priming; why: keeps initial reads and post-action refreshes consistent.
+- Live event counters are updated atomically by a database trigger on event insertion/deletion; why: scores and individual statistics cannot partially save.
+- Shared page metadata and match presentation helpers live in focused modules; why: every content screen has consistent metadata and reusable score presentation.

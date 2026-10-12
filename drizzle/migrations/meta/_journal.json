@@ -15,6 +15,13 @@
       "when": 1791769473092,
       "tag": "0001_app_internal_screens",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791849009926,
+      "tag": "0002_atomic_match_event_stats",
+      "breakpoints": true
     }
   ]
 }

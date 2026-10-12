@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Link2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Shell, Tag } from "@/components/Shell";
@@ -30,6 +30,7 @@ export function parseLobbyCode(raw: string): string | null {
 function Home() {
   const navigate = useNavigate();
   const { user } = useSession();
+  useEffect(() => { if (user) navigate({ to: "/home", replace: true }); }, [user, navigate]);
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("");
 

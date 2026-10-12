@@ -1,127 +1,31 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
-import { Copy, Shuffle, Trophy } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { Copy, Shuffle, CirclePlay, Trophy, Check, X, Users, Share2 } from "lucide-react";
 import { toast } from "sonner";
-import { Shell, Tag } from "@/components/Shell";
+import { AppShell, Avatar, OvrBadge, BackHome, SectionTitle } from "@/components/AppShell";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { MatchDetails, PageError, PageMissing } from "@/components/MatchUI";
 import { supabase } from "@/integrations/supabase/client";
-import { drawTeams, modalityInfo, TEAM_LABEL, type Team } from "@/lib/draw";
-import { loadMatch, type MatchPlayer } from "@/lib/match-data";
+import { drawTeams, MODALITIES, modalityInfo, TEAM_LABEL, type Team } from "@/lib/draw";
+import { matchQuery } from "@/lib/app-queries";
+import { pageHead } from "@/lib/page-head";
+import { shareLink } from "@/lib/match-data";
 import { useSession } from "@/hooks/use-session";
-
-export const Route = createFileRoute("/lobby/$matchId")({
-  head: () => ({
-    meta: [
-      { title: "Lobby da Pelada — Súmula FC" },
-      { name: "description", content: "Entre na lista do racha e veja o sorteio dos times." },
-      { property: "og:title", content: "Lobby da Pelada — Súmula FC" },
-      { property: "og:description", content: "Entre na lista do racha e veja o sorteio dos times." },
-    ],
-  }),
-  component: Lobby,
-});
-
-const ORDER: Team[] = ["colete", "sem_colete", "proxima_1", "proxima_2", "proxima_3", "unassigned"];
-
-function Lobby() {
-  const { matchId } = Route.useParams();
-  const { user } = useSession();
-  const [data, setData] = useState<Awaited<ReturnType<typeof loadMatch>> | null>(null);
-  const refresh = useCallback(() => loadMatch(matchId).then(setData), [matchId]);
-  useEffect(() => { refresh(); }, [refresh]);
-
-  if (!data) return <Shell><p className="mt-10 text-muted-foreground">Carregando…</p></Shell>;
-  if (!data.match) return <Shell><h1 className="mt-10 text-4xl">Racha não encontrado</h1></Shell>;
-
-  const { match, players } = data;
-  const info = modalityInfo(match.modality);
-  const isCreator = user?.id === match.creator_id;
-  const joined = players.some((p) => p.player_id === user?.id);
-  const full = players.length >= info.max;
-  const drawn = players.some((p) => p.team !== "unassigned");
-
-  const join = async () => {
-    const next = Math.max(0, ...players.map((p) => p.queue_position)) + 1;
-    const { error } = await supabase.from("match_players").insert({ match_id: matchId, player_id: user!.id, queue_position: next });
-    if (error) toast.error("Não foi possível entrar"); else refresh();
-  };
-  const leave = async () => {
-    await supabase.from("match_players").delete().eq("match_id", matchId).eq("player_id", user!.id);
-    refresh();
-  };
-  const draw = async () => {
-    if (players.length < 2) return void toast.error("Precisa de pelo menos 2 atletas");
-    const res = drawTeams(players.map((p) => ({ id: p.player_id, queue: p.queue_position, overall: p.profile?.overall_rating ?? 70 })), info.size);
-    await Promise.all(Object.entries(res).map(([pid, team]) =>
-      supabase.from("match_players").update({ team }).eq("match_id", matchId).eq("player_id", pid)));
-    toast.success("Times sorteados!");
-    refresh();
-  };
-  const link = typeof window !== "undefined" ? `${window.location.origin}/lobby/${matchId}` : "";
-
-  const avg = (t: Team) => {
-    const l = players.filter((p) => p.team === t);
-    return l.length ? Math.round(l.reduce((s, p) => s + (p.profile?.overall_rating ?? 70), 0) / l.length) : 0;
-  };
-
-  return (
-    <Shell>
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <Tag>Lobby · {match.modality}</Tag>
-          <h1 className="mt-3 text-5xl">{match.title || "Pelada da semana"}</h1>
-          <p className="mt-1 text-muted-foreground">{players.length}/{info.max} atletas confirmados</p>
-        </div>
-        <button className="flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold hover:border-primary"
-          onClick={() => { navigator.clipboard.writeText(link); toast.success("Link copiado"); }}>
-          <Copy className="h-4 w-4" /> Copiar link do racha
-        </button>
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-3">
-        {!user && <Link to="/auth" className="pill w-auto bg-primary text-primary-foreground">Entre para confirmar presença</Link>}
-        {user && !joined && <button disabled={full} onClick={join} className="pill w-auto bg-primary text-primary-foreground disabled:opacity-50">{full ? "Lotado" : "Confirmar presença"}</button>}
-        {user && joined && !isCreator && <button onClick={leave} className="pill w-auto border">Sair da lista</button>}
-        {isCreator && <button onClick={draw} className="pill w-auto bg-primary text-primary-foreground"><Shuffle className="h-5 w-5" /> {drawn ? "Refazer sorteio" : "Sortear Times"}</button>}
-        <Link to="/match/summary/$matchId" params={{ matchId }} className="pill w-auto bg-secondary"><Trophy className="h-5 w-5 text-primary" /> Súmula & Resenha</Link>
-      </div>
-
-      {drawn ? (
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {ORDER.map((t) => {
-            const list = players.filter((p) => p.team === t);
-            if (!list.length) return null;
-            const starter = t === "colete" || t === "sem_colete";
-            return (
-              <div key={t} className={`rounded-2xl p-5 ${t === "colete" ? "bg-primary text-primary-foreground" : "bg-card"}`}>
-                <div className="flex items-baseline justify-between">
-                  <h2 className="text-2xl">{TEAM_LABEL[t]}</h2>
-                  {starter && <span className="text-sm font-bold opacity-80">Média {avg(t)}</span>}
-                </div>
-                <PlayerList list={list} />
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="mt-8 rounded-2xl bg-card p-5">
-          <h2 className="text-2xl">Ordem de chegada</h2>
-          <PlayerList list={players} />
-        </div>
-      )}
-    </Shell>
-  );
-}
-
-function PlayerList({ list }: { list: MatchPlayer[] }) {
-  return (
-    <ol className="mt-3 flex flex-col gap-1.5">
-      {list.map((p) => (
-        <li key={p.player_id} className="flex items-center gap-3 text-sm">
-          <span className="w-7 font-display text-lg opacity-60">{p.queue_position}</span>
-          <span className="flex-1 font-semibold">{p.profile?.apelido ?? "Atleta"}</span>
-          <span className="font-display text-lg">{p.profile?.overall_rating ?? 70}</span>
-        </li>
-      ))}
-    </ol>
-  );
-}
+export const Route=createFileRoute("/lobby/$matchId")({head:()=>pageHead("Montagem dos times","Confirme presença e forme os times da sua pelada."),loader:({context,params})=>context.queryClient.ensureQueryData(matchQuery(params.matchId)),component:Lobby,errorComponent:PageError,notFoundComponent:PageMissing});
+const ORDER:Team[]=["colete","sem_colete","proxima_1","proxima_2","proxima_3","unassigned"];
+function Lobby(){const {matchId}=Route.useParams();const {user}=useSession();const {data}=useSuspenseQuery(matchQuery(matchId));const qc=useQueryClient();const navigate=useNavigate();const [busy,setBusy]=useState(false);const [selected,setSelected]=useState<string[]>(data.players.filter(p=>p.presence==="confirmed").map(p=>p.player_id));
+useEffect(()=>{setSelected(data.players.filter(p=>p.presence==="confirmed").map(p=>p.player_id));},[data.players]);
+if(!data.match)return <PageMissing/>;const {match,players}=data;const info=modalityInfo(match.modality);const creator=user?.id===match.creator_id;const open=match.status==="open";const confirmed=players.filter(p=>p.presence==="confirmed");const mine=players.find(p=>p.player_id===user?.id);const drawn=confirmed.some(p=>p.team!=="unassigned");const refresh=()=>qc.invalidateQueries({queryKey:["match",matchId]});
+const presence=async(p:string)=>{setBusy(true);const {error}=await supabase.rpc("set_presence",{_match:matchId,_presence:p});setBusy(false);if(error)return void toast.error("Não foi possível atualizar sua presença");await refresh();};
+const draw=async()=>{const chosen=confirmed.filter(p=>selected.includes(p.player_id));if(chosen.length<2)return void toast.error("Selecione pelo menos 2 atletas");setBusy(true);const result=drawTeams(chosen.map(p=>({id:p.player_id,queue:p.queue_position,overall:p.profile?.overall_rating??70})),info.size);const responses=await Promise.all(players.map(p=>supabase.from("match_players").update({team:result[p.player_id]||"unassigned"}).eq("match_id",matchId).eq("player_id",p.player_id)));setBusy(false);if(responses.some(r=>r.error))return void toast.error("Não foi possível salvar todos os times. Tente novamente.");await refresh();toast.success("Times equilibrados e salvos!");};
+return <AppShell title="Montagem dos times" back={<BackHome/>} action={<Button variant="ghost" size="icon" aria-label="Copiar link do racha" onClick={async()=>{try{await navigator.clipboard.writeText(window.location.href);toast.success("Link copiado!");}catch{toast.error("Não foi possível copiar");}}}><Copy/></Button>}><div className="flex items-start justify-between gap-4"><div className="min-w-0"><p className="text-xs font-bold text-muted-foreground">{match.status==="finished"?"PARTIDA ENCERRADA":"SEU RACHA"}</p><h2 className="mt-2 text-3xl break-words">{match.title||"Pelada da semana"}</h2></div><span className="rounded bg-primary px-3 py-2 font-display text-2xl">{match.modality}</span></div><MatchDetails match={match}/>
+{open&&<div className="mt-5 flex flex-wrap gap-2">{!user?<Button asChild><Link to="/auth">Entre para confirmar presença</Link></Button>:<><Button disabled={busy||(!mine&&confirmed.length>=info.max)} variant={mine?.presence==="confirmed"?"default":"secondary"} onClick={()=>presence("confirmed")}><Check/> {confirmed.length>=info.max&&!mine?"Lotado":"Vou jogar"}</Button><Button disabled={busy} variant={mine?.presence==="declined"?"default":"secondary"} onClick={()=>presence("declined")}><X/> Não vou</Button></>}</div>}
+<SectionTitle right={<span className="text-xs text-muted-foreground">{confirmed.length}/{info.max} confirmados</span>}>Modalidade</SectionTitle><div className="grid grid-cols-3 gap-2 sm:grid-cols-6">{MODALITIES.map(m=><Button key={m.id} variant={m.id===match.modality?"default":"secondary"} disabled={!creator||!open||busy} className="h-12 font-display text-xl" onClick={async()=>{if(confirmed.length>m.max)return void toast.error("A modalidade não comporta todos os confirmados");if(drawn)return void toast.error("Refaça a seleção antes de alterar: os times já estão definidos.");const {error}=await supabase.from("matches").update({modality:m.id}).eq("id",matchId);if(error)toast.error("Não foi possível alterar");else refresh();}}>{m.id}</Button>)}</div>
+<SectionTitle right={<span className="text-sm font-bold">{selected.length} selecionados</span>}>{drawn?"Escalações salvas":"Ordem de chegada"}</SectionTitle>
+{!drawn&&<div className="border-y">{confirmed.map(p=><div key={p.player_id} className="sport-row"><span className="w-5 text-xs text-muted-foreground">{p.queue_position}</span><Avatar name={p.profile?.apelido||"Atleta"}/><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{p.profile?.apelido||"Atleta"}</p><p className="text-xs text-muted-foreground">{p.profile?.position||"MEI"}</p></div><OvrBadge value={p.profile?.overall_rating??70}/>{creator&&open&&<Checkbox aria-label={`Escalar ${p.profile?.apelido||"Atleta"}`} checked={selected.includes(p.player_id)} onCheckedChange={v=>setSelected(prev=>v?[...prev,p.player_id]:prev.filter(id=>id!==p.player_id))}/>}</div>)}{!confirmed.length&&<p className="py-6 text-muted-foreground">A lista está esperando os atletas.</p>}</div>}
+{drawn&&<div className="grid gap-4 sm:grid-cols-2">{ORDER.map(team=>{const list=confirmed.filter(p=>p.team===team);if(!list.length)return null;const starter=team==="colete"||team==="sem_colete";return <section key={team} className="overflow-hidden rounded-lg border"><div className={`flex justify-between gap-3 px-4 py-3 ${team==="colete"?"bg-primary text-primary-foreground":"bg-ink text-ink-foreground"}`}><h3 className="text-xl">{TEAM_LABEL[team]}</h3>{starter&&<span className="text-xs font-bold">OVR {Math.round(list.reduce((s,p)=>s+(p.profile?.overall_rating??70),0)/list.length)}</span>}</div><div className="px-4">{list.map(p=><div className="sport-row" key={p.player_id}><Avatar name={p.profile?.apelido||"Atleta"} size={32}/><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{p.profile?.apelido}</p><p className="text-xs text-muted-foreground">{p.profile?.position} · chegada {p.queue_position}</p></div><span className="font-display text-xl">{p.profile?.overall_rating??70}</span></div>)}</div></section>;})}</div>}
+{creator&&open&&<div className="mt-6 grid gap-3"><Button className="sport-action w-full" disabled={busy} onClick={draw}><Shuffle/>{drawn?"Refazer sorteio":"Equilibrar e salvar times"}</Button><Button variant="secondary" disabled={busy||!drawn} className="sport-action w-full" onClick={async()=>{setBusy(true);const {error}=await supabase.from("matches").update({status:"in_progress",started_at:new Date().toISOString()}).eq("id",matchId);setBusy(false);if(error)return void toast.error("Não foi possível iniciar");await refresh();navigate({to:"/match/live/$matchId",params:{matchId}});}}><CirclePlay/> Iniciar partida</Button></div>}
+{match.status==="in_progress"&&<Button asChild className="sport-action mt-6 w-full"><Link to="/match/live/$matchId" params={{matchId}}><CirclePlay/> Acompanhar ao vivo</Link></Button>}
+<div className="mt-4 flex flex-wrap gap-2"><Button asChild variant="secondary"><Link to="/match/summary/$matchId" params={{matchId}}><Trophy/> Súmula e resenha</Link></Button><Button variant="ghost" onClick={async()=>{try{if(await shareLink(window.location.href,match.title||"Súmula FC"))toast.success("Link compartilhado");}catch{toast.error("Não foi possível compartilhar");}}}><Share2/> Compartilhar</Button></div><p className="mt-6 flex items-center gap-2 text-xs text-muted-foreground"><Users className="size-4"/>{info.size} atletas por time</p></AppShell>;}

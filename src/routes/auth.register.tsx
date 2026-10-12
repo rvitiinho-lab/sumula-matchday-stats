@@ -16,6 +16,8 @@ export const Route = createFileRoute("/auth/register")({
       { name: "description", content: "Crie seu cadastro de atleta e entre na súmula." },
       { property: "og:title", content: "Cadastro de Atleta — Súmula FC" },
       { property: "og:description", content: "Crie seu cadastro de atleta e entre na súmula." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Register,

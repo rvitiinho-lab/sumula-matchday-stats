@@ -32,21 +32,25 @@ const PLAYER_COLS =
   "player_id, queue_position, team, presence, goals, assists, tackles, shots_on_goal, fouls_suffered, fouls_committed, saves, profile:profiles(nome, apelido, overall_rating, quote, position)";
 
 export async function loadMatch(id: string) {
-  const [{ data: match }, { data: players }] = await Promise.all([
+  const [matchResponse, playersResponse] = await Promise.all([
     supabase.from("matches").select("*").eq("id", id).maybeSingle(),
     supabase.from("match_players").select(PLAYER_COLS).eq("match_id", id).order("queue_position"),
   ]);
-  return { match, players: (players ?? []) as unknown as MatchPlayer[] };
+  if (matchResponse.error) throw matchResponse.error;
+  if (playersResponse.error) throw playersResponse.error;
+  return { match: matchResponse.data, players: (playersResponse.data ?? []).map(p => ({ ...p, team: p.team ?? "unassigned", goals: p.goals ?? 0, assists: p.assists ?? 0 })) as unknown as MatchPlayer[] };
 }
 
 export type MatchRow = NonNullable<Awaited<ReturnType<typeof loadMatch>>["match"]>;
 
 /** All matches the user created or is listed in, newest first. */
 export async function loadMyMatches(uid: string): Promise<MatchRow[]> {
-  const { data: mine } = await supabase.from("match_players").select("match_id").eq("player_id", uid);
+  const { data: mine, error: mineError } = await supabase.from("match_players").select("match_id").eq("player_id", uid);
+  if (mineError) throw mineError;
   const ids = (mine ?? []).map((r) => r.match_id);
   const filter = ids.length ? `creator_id.eq.${uid},id.in.(${ids.join(",")})` : `creator_id.eq.${uid}`;
-  const { data } = await supabase.from("matches").select("*").or(filter).order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("matches").select("*").or(filter).order("created_at", { ascending: false });
+  if (error) throw error;
   return data ?? [];
 }
 

@@ -13,6 +13,8 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Entre na sua conta de atleta do Súmula FC." },
       { property: "og:title", content: "Entrar — Súmula FC" },
       { property: "og:description", content: "Entre na sua conta de atleta do Súmula FC." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AuthLayout,
@@ -39,7 +41,7 @@ function Login() {
             const { error } = await supabase.auth.signInWithPassword({ email, password });
             setBusy(false);
             if (error) return void toast.error("E-mail ou senha incorretos");
-            navigate({ to: "/" });
+            navigate({ to: "/home" });
           }}
         >
           <Input type="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
