@@ -33,11 +33,11 @@ function Summary() {
   const isCreator = user?.id === match.creator_id;
 
   const setScore = async (field: "score_team_a" | "score_team_b", d: number) => {
-    await supabase.from("matches").update({ [field]: Math.max(0, (match[field] ?? 0) + d), status: "in_progress" }).eq("id", matchId);
+    await supabase.from("matches").update({ [field]: Math.max(0, (match[field] ?? 0) + d), status: "in_progress" } as { score_team_a?: number; status: string }).eq("id", matchId);
     refresh();
   };
   const setStat = async (p: MatchPlayer, field: "goals" | "assists", d: number) => {
-    await supabase.from("match_players").update({ [field]: Math.max(0, p[field] + d) }).eq("match_id", matchId).eq("player_id", p.player_id);
+    await supabase.from("match_players").update({ [field]: Math.max(0, p[field] + d) } as { goals?: number }).eq("match_id", matchId).eq("player_id", p.player_id);
     refresh();
   };
 
