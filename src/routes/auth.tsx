@@ -38,7 +38,7 @@ function Login() {
             e.preventDefault(); setBusy(true);
             const { error } = await supabase.auth.signInWithPassword({ email, password });
             setBusy(false);
-            if (error) return toast.error("E-mail ou senha incorretos");
+            if (error) return void toast.error("E-mail ou senha incorretos");
             navigate({ to: "/" });
           }}
         >

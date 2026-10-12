@@ -41,12 +41,12 @@ function Register() {
 
   const onSubmit = async (v: Form) => {
     const { data: taken } = await supabase.from("profiles").select("id").eq("apelido", v.apelido).maybeSingle();
-    if (taken) return toast.error("Esse apelido já está na súmula");
+    if (taken) return void toast.error("Esse apelido já está na súmula");
     const { error } = await supabase.auth.signUp({
       email: v.email, password: v.password,
       options: { emailRedirectTo: window.location.origin, data: { nome: v.nome, apelido: v.apelido } },
     });
-    if (error) return toast.error(error.message);
+    if (error) return void toast.error(error.message);
     setDone(true);
   };
 

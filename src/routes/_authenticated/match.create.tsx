@@ -32,7 +32,7 @@ function CreateMatch() {
     const uid = u.user!.id;
     const { data, error } = await supabase.from("matches")
       .insert({ creator_id: uid, modality, title: title.trim().slice(0, 60) || null }).select("id").single();
-    if (error || !data) { setBusy(false); return toast.error("Não foi possível criar a pelada"); }
+    if (error || !data) { setBusy(false); return void toast.error("Não foi possível criar a pelada"); }
     await supabase.from("match_players").insert({ match_id: data.id, player_id: uid, queue_position: 1 });
     navigate({ to: "/lobby/$matchId", params: { matchId: data.id } });
   };

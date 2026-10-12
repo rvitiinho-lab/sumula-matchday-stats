@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
 export function parseLobbyCode(raw: string): string | null {
   const v = raw.trim();
   const m = v.match(/lobby\/([0-9a-f-]{36})/i) ?? v.match(/^([0-9a-f-]{36})$/i);
-  return m ? m[1] : null;
+  return m?.[1] ?? null;
 }
 
 function Home() {
@@ -35,7 +35,7 @@ function Home() {
 
   const go = () => {
     const id = parseLobbyCode(code);
-    if (!id) return toast.error("Link ou código inválido");
+    if (!id) return void toast.error("Link ou código inválido");
     navigate({ to: "/lobby/$matchId", params: { matchId: id } });
   };
 

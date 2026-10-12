@@ -3,7 +3,7 @@ import { drawTeams, modalityInfo } from "./draw";
 
 describe("capacidade por modalidade", () => {
   it("x1=8, x2=16, x5=40, x6=48, x7=56, x11=88", () => {
-    expect(["x1", "x2", "x5", "x6", "x7", "x11"].map((m) => modalityInfo(m).max)).toEqual([8, 16, 40, 48, 56, 88]);
+    expect(["x1", "x2", "x5", "x6", "x7", "x11"].map((m) => modalityInfo(m)!.max)).toEqual([8, 16, 40, 48, 56, 88]);
   });
 });
 
@@ -21,6 +21,6 @@ describe("sorteio híbrido", () => {
     expect(sum("colete")).toBe(sum("sem_colete"));
   });
   it("próximas preenchidas por ordem de chegada", () => {
-    expect([r.p5, r.p6, r.p7, r.p8, r.p9, r.p10, r.p11]).toEqual(["proxima_1", "proxima_1", "proxima_2", "proxima_2", "proxima_3", "proxima_3", "unassigned"]);
+    expect(["p5","p6","p7","p8","p9","p10","p11"].map((k) => r[k])).toEqual(["proxima_1", "proxima_1", "proxima_2", "proxima_2", "proxima_3", "proxima_3", "unassigned"]);
   });
 });

@@ -49,7 +49,7 @@ function Lobby() {
     refresh();
   };
   const draw = async () => {
-    if (players.length < 2) return toast.error("Precisa de pelo menos 2 atletas");
+    if (players.length < 2) return void toast.error("Precisa de pelo menos 2 atletas");
     const res = drawTeams(players.map((p) => ({ id: p.player_id, queue: p.queue_position, overall: p.profile?.overall_rating ?? 70 })), info.size);
     await Promise.all(Object.entries(res).map(([pid, team]) =>
       supabase.from("match_players").update({ team }).eq("match_id", matchId).eq("player_id", pid)));
