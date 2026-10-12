@@ -1,0 +1,19 @@
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
+
+export function useSession() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => { setUser(data.user); setLoading(false); });
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setUser(s?.user ?? null));
+    return () => data.subscription.unsubscribe();
+  }, []);
+  return { user, loading };
+}
+
+export async function signInGoogle() {
+  const { lovable } = await import("@/integrations/lovable/index");
+  return lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+}
