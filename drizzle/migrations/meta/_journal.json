@@ -8,6 +8,13 @@
       "when": 1791766724728,
       "tag": "0000_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791769473092,
+      "tag": "0001_app_internal_screens",
+      "breakpoints": true
     }
   ]
 }
