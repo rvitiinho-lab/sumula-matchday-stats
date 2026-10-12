@@ -1,22 +1,24 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { BarChart3, Home, User } from "lucide-react";
+import { BarChart3, Home, User, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function AppShell({ title, back, children, action }: { title?: string; back?: ReactNode; children: ReactNode; action?: ReactNode }) {
   return (
     <div className="theme-cream min-h-screen pb-28">
-      <header className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-5 pt-6 pb-3">
+      <header className="border-b bg-ink text-ink-foreground">
+      <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-5">
         <div className="flex items-center gap-3">
           {back}
           {title ? (
             <h1 className="text-3xl leading-none">{title}</h1>
           ) : (
-            <Link to="/home" className="font-display text-2xl uppercase tracking-wide">Súmula <span className="rounded bg-ink px-1.5 text-primary">FC</span></Link>
+             <Link to="/home" className="font-display text-2xl uppercase">Súmula <span className="rounded bg-primary px-1.5 text-primary-foreground">FC</span></Link>
           )}
         </div>
         {action}
-      </header>
-      <main className="mx-auto max-w-2xl px-5">{children}</main>
+      </div></header>
+      <main className="mx-auto max-w-3xl px-5 pt-6">{children}</main>
       <BottomNav />
     </div>
   );
@@ -29,8 +31,8 @@ function BottomNav() {
     { to: "/profile", label: "Perfil", icon: User },
   ] as const;
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 px-4 pb-4">
-      <div className="mx-auto flex max-w-md items-center justify-around rounded-full bg-ink p-2 text-ink-foreground shadow-xl">
+    <nav aria-label="Navegação principal" className="fixed inset-x-0 bottom-0 z-40 border-t bg-ink px-4 pb-3 pt-2 text-ink-foreground">
+      <div className="mx-auto flex max-w-md items-center justify-around p-2">
         {items.map(({ to, label, icon: Icon }) => (
           <Link key={to} to={to} className="flex flex-1 items-center justify-center gap-2 rounded-full px-3 py-2.5 text-sm font-bold opacity-70"
             activeProps={{ className: "bg-primary text-primary-foreground !opacity-100" }}>
@@ -57,7 +59,11 @@ export function OvrBadge({ value, className = "" }: { value: number; className?:
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`rounded-3xl border bg-card p-5 ${className}`}>{children}</section>;
+  return <section className={`rounded-lg border bg-card p-5 ${className}`}>{children}</section>;
+}
+
+export function BackHome() {
+  return <Button asChild variant="ghost" size="icon" aria-label="Voltar ao início"><Link to="/home"><ArrowLeft /></Link></Button>;
 }
 
 export function SectionTitle({ children, right }: { children: ReactNode; right?: ReactNode }) {

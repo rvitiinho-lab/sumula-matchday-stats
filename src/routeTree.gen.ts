@@ -18,6 +18,8 @@ import { Route as AuthenticatedResultsRouteImport } from './routes/_authenticate
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as LobbyMatchIdRouteImport } from './routes/lobby.$matchId'
 import { Route as AuthenticatedMatchCreateRouteImport } from './routes/_authenticated/match.create'
+import { Route as MatchLiveMatchIdRouteImport } from './routes/match.live.$matchId'
+import { Route as MatchReviewMatchIdRouteImport } from './routes/match.review.$matchId'
 import { Route as MatchSummaryMatchIdRouteImport } from './routes/match.summary.$matchId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -65,6 +67,16 @@ const AuthenticatedMatchCreateRoute =
     path: '/match/create',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const MatchLiveMatchIdRoute = MatchLiveMatchIdRouteImport.update({
+  id: '/match/live/$matchId',
+  path: '/match/live/$matchId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MatchReviewMatchIdRoute = MatchReviewMatchIdRouteImport.update({
+  id: '/match/review/$matchId',
+  path: '/match/review/$matchId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MatchSummaryMatchIdRoute = MatchSummaryMatchIdRouteImport.update({
   id: '/match/summary/$matchId',
   path: '/match/summary/$matchId',
@@ -80,6 +92,8 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
+  '/match/live/$matchId': typeof MatchLiveMatchIdRoute
+  '/match/review/$matchId': typeof MatchReviewMatchIdRoute
   '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
 }
 export interface FileRoutesByTo {
@@ -91,6 +105,8 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
+  '/match/live/$matchId': typeof MatchLiveMatchIdRoute
+  '/match/review/$matchId': typeof MatchReviewMatchIdRoute
   '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
 }
 export interface FileRoutesById {
@@ -104,6 +120,8 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/_authenticated/match/create': typeof AuthenticatedMatchCreateRoute
+  '/match/live/$matchId': typeof MatchLiveMatchIdRoute
+  '/match/review/$matchId': typeof MatchReviewMatchIdRoute
   '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
 }
 export interface FileRouteTypes {
@@ -117,6 +135,8 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/lobby/$matchId'
     | '/match/create'
+    | '/match/live/$matchId'
+    | '/match/review/$matchId'
     | '/match/summary/$matchId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -128,6 +148,8 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/lobby/$matchId'
     | '/match/create'
+    | '/match/live/$matchId'
+    | '/match/review/$matchId'
     | '/match/summary/$matchId'
   id:
     | '__root__'
@@ -140,6 +162,8 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/lobby/$matchId'
     | '/_authenticated/match/create'
+    | '/match/live/$matchId'
+    | '/match/review/$matchId'
     | '/match/summary/$matchId'
   fileRoutesById: FileRoutesById
 }
@@ -148,6 +172,8 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   LobbyMatchIdRoute: typeof LobbyMatchIdRoute
+  MatchLiveMatchIdRoute: typeof MatchLiveMatchIdRoute
+  MatchReviewMatchIdRoute: typeof MatchReviewMatchIdRoute
   MatchSummaryMatchIdRoute: typeof MatchSummaryMatchIdRoute
 }
 
@@ -216,6 +242,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMatchCreateRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/match/live/$matchId': {
+      id: '/match/live/$matchId'
+      path: '/match/live/$matchId'
+      fullPath: '/match/live/$matchId'
+      preLoaderRoute: typeof MatchLiveMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/match/review/$matchId': {
+      id: '/match/review/$matchId'
+      path: '/match/review/$matchId'
+      fullPath: '/match/review/$matchId'
+      preLoaderRoute: typeof MatchReviewMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/match/summary/$matchId': {
       id: '/match/summary/$matchId'
       path: '/match/summary/$matchId'
@@ -258,6 +298,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   LobbyMatchIdRoute: LobbyMatchIdRoute,
+  MatchLiveMatchIdRoute: MatchLiveMatchIdRoute,
+  MatchReviewMatchIdRoute: MatchReviewMatchIdRoute,
   MatchSummaryMatchIdRoute: MatchSummaryMatchIdRoute,
 }
 export const routeTree = rootRouteImport
