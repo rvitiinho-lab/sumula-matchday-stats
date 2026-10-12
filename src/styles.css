@@ -83,3 +83,30 @@
   transition: transform 150ms, background-color 150ms;
   &:hover { transform: translateY(-1px); }
 }
+
+:root {
+  --ink: oklch(0.21 0.03 150);
+  --ink-foreground: oklch(0.97 0.01 110);
+}
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+}
+.theme-cream {
+  --background: oklch(0.965 0.016 100);
+  --foreground: oklch(0.2 0.02 145);
+  --card: oklch(0.99 0.008 100);
+  --card-foreground: oklch(0.2 0.02 145);
+  --popover: oklch(0.99 0.008 100);
+  --popover-foreground: oklch(0.2 0.02 145);
+  --secondary: oklch(0.92 0.02 100);
+  --secondary-foreground: oklch(0.2 0.02 145);
+  --muted: oklch(0.93 0.016 100);
+  --muted-foreground: oklch(0.48 0.02 120);
+  --accent: oklch(0.92 0.03 120);
+  --accent-foreground: oklch(0.2 0.02 145);
+  --border: oklch(0.2 0.02 145 / 12%);
+  --input: oklch(0.2 0.02 145 / 18%);
+  background-color: var(--background);
+  color: var(--foreground);
+}
