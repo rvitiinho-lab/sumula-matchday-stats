@@ -10,33 +10,109 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthRegisterRouteImport } from './routes/auth.register'
+import { Route as LobbyMatchIdRouteImport } from './routes/lobby.$matchId'
+import { Route as AuthenticatedMatchCreateRouteImport } from './routes/_authenticated/match.create'
+import { Route as MatchSummaryMatchIdRouteImport } from './routes/match.summary.$matchId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthRoute,
+} as any)
+const LobbyMatchIdRoute = LobbyMatchIdRouteImport.update({
+  id: '/lobby/$matchId',
+  path: '/lobby/$matchId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMatchCreateRoute =
+  AuthenticatedMatchCreateRouteImport.update({
+    id: '/match/create',
+    path: '/match/create',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const MatchSummaryMatchIdRoute = MatchSummaryMatchIdRouteImport.update({
+  id: '/match/summary/$matchId',
+  path: '/match/summary/$matchId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteWithChildren
+  '/auth/register': typeof AuthRegisterRoute
+  '/lobby/$matchId': typeof LobbyMatchIdRoute
+  '/match/create': typeof AuthenticatedMatchCreateRoute
+  '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteWithChildren
+  '/auth/register': typeof AuthRegisterRoute
+  '/lobby/$matchId': typeof LobbyMatchIdRoute
+  '/match/create': typeof AuthenticatedMatchCreateRoute
+  '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/auth/register': typeof AuthRegisterRoute
+  '/lobby/$matchId': typeof LobbyMatchIdRoute
+  '/_authenticated/match/create': typeof AuthenticatedMatchCreateRoute
+  '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/auth/register'
+    | '/lobby/$matchId'
+    | '/match/create'
+    | '/match/summary/$matchId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/auth/register'
+    | '/lobby/$matchId'
+    | '/match/create'
+    | '/match/summary/$matchId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/auth/register'
+    | '/lobby/$matchId'
+    | '/_authenticated/match/create'
+    | '/match/summary/$matchId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
+  LobbyMatchIdRoute: typeof LobbyMatchIdRoute
+  MatchSummaryMatchIdRoute: typeof MatchSummaryMatchIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +124,78 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/lobby/$matchId': {
+      id: '/lobby/$matchId'
+      path: '/lobby/$matchId'
+      fullPath: '/lobby/$matchId'
+      preLoaderRoute: typeof LobbyMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/match/create': {
+      id: '/_authenticated/match/create'
+      path: '/match/create'
+      fullPath: '/match/create'
+      preLoaderRoute: typeof AuthenticatedMatchCreateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/match/summary/$matchId': {
+      id: '/match/summary/$matchId'
+      path: '/match/summary/$matchId'
+      fullPath: '/match/summary/$matchId'
+      preLoaderRoute: typeof MatchSummaryMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMatchCreateRoute: typeof AuthenticatedMatchCreateRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMatchCreateRoute: AuthenticatedMatchCreateRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface AuthRouteChildren {
+  AuthRegisterRoute: typeof AuthRegisterRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthRegisterRoute: AuthRegisterRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
+  LobbyMatchIdRoute: LobbyMatchIdRoute,
+  MatchSummaryMatchIdRoute: MatchSummaryMatchIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
