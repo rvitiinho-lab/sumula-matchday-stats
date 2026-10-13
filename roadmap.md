@@ -1,4 +1,5 @@
 # Súmula FC
+- [ ] Divulgar automaticamente os prêmios para todos ao encerrar a pelada; vitória +2, defesa comum +1 e defesa difícil +2 com registro explícito.
 - [ ] Incluir Melhor da Noite por desempenho acumulado e MVPs calculados, com card e recado — definir agrupamento dos jogos da pelada.
 - [ ] Simplificar premiações para MVP automático — analisar dados e apresentar fórmula antes da implementação.
 - [ ] Substituir votação por resultados com MVP, justificativa e card especial; preservar cards e estatísticas individuais.
