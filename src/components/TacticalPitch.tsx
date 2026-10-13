@@ -11,7 +11,7 @@ import { modalityInfo } from "@/lib/draw";
 import type { MatchPlayer, MatchRow } from "@/lib/match-data";
 
 const positions = ["GOL", "ZAG", "LAT", "VOL", "MEI", "ATA"];
-export function TacticalPitch({ match, players, userId, onPlayer }: { match: MatchRow; players: MatchPlayer[]; userId?: string; onPlayer?: (p: MatchPlayer) => void }) {
+export function TacticalPitch({ match, players, userId, onPlayer }: { match: MatchRow; players: MatchPlayer[]; userId?: string | undefined; onPlayer?: (p: MatchPlayer) => void }) {
   const qc = useQueryClient();
   const [busy, setBusy] = useState(false);
   const size = modalityInfo(match.modality).size;
