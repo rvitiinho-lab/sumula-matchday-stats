@@ -29,7 +29,7 @@ Esses pesos são uma regra inicial explicável, não uma medida comprovada de eq
 **Vitória:** atribuir uma vitória por rodada aos atletas que terminarem confirmados em campo no time vencedor, usando o placar final salvo e preservando essa escalação no encerramento. Empate não dá pontos de vitória. Atletas que saíram continuam concorrendo com suas estatísticas, mas não recebem vitória por associação presumida ao time final. O bônus de vitória sozinho não comprova desempenho suficiente para definir MVP.
 
 ## Quando haverá um MVP
-- Calcular o resultado somente após a partida ser encerrada.
+- Calcular a pontuação de cada rodada encerrada e revelar os prêmios automaticamente no encerramento da pelada.
 - Considerar também quem saiu ou foi substituído, desde que tenha estatísticas da partida; não limitar a escolha aos titulares finais.
 - Como proteção conservadora contra partidas de teste ou registro insuficiente, exigir pelo menos dois atletas com alguma ação registrada e uma maior pontuação positiva e única.
 - Sem esses dados, mostrar **“MVP não definido — registros insuficientes”**, mantendo as estatísticas disponíveis.
@@ -38,7 +38,7 @@ Esses pesos são uma regra inicial explicável, não uma medida comprovada de eq
 
 ## Mudanças nas telas
 - Remover votações, notas pós-jogo e premiações separadas de Craque, Bagre e Muralha da experiência atual. Preservar os dados históricos e os valores atuais de overall; o MVP não atualiza o overall.
-- Ao encerrar a partida, abrir diretamente a súmula com o MVP em destaque ou o estado sem vencedor.
+- Ao encerrar uma rodada, abrir sua súmula e permitir seguir para a próxima; ao encerrar a pelada, abrir os resultados com os MVPs e o Melhor da Noite em destaque ou os estados sem vencedor.
 - Exibir pontuação e contribuição de cada estatística para justificar a escolha.
 - Criar card especial do MVP com creme, verde e tipografia esportiva das referências já usadas no app, frase de até 120 caracteres e opção de salvar. Não há acesso ao Figma ao vivo; preservar a identidade das imagens de referência existentes.
 - Manter gols, assistências, desarmes e defesas nos resultados e nos cards individuais, incluindo atletas que saíram com estatísticas registradas.
