@@ -61,6 +61,7 @@ export type Database = {
       }
       match_players: {
         Row: {
+          arrival_order: number | null
           assists: number | null
           fouls_committed: number
           fouls_suffered: number
@@ -68,13 +69,16 @@ export type Database = {
           match_id: string
           player_id: string
           presence: string
+          queue_index: number | null
           queue_position: number
+          queue_status: string
           saves: number
           shots_on_goal: number
           tackles: number
           team: string | null
         }
         Insert: {
+          arrival_order?: number | null
           assists?: number | null
           fouls_committed?: number
           fouls_suffered?: number
@@ -82,13 +86,16 @@ export type Database = {
           match_id: string
           player_id: string
           presence?: string
+          queue_index?: number | null
           queue_position: number
+          queue_status?: string
           saves?: number
           shots_on_goal?: number
           tackles?: number
           team?: string | null
         }
         Update: {
+          arrival_order?: number | null
           assists?: number | null
           fouls_committed?: number
           fouls_suffered?: number
@@ -96,7 +103,9 @@ export type Database = {
           match_id?: string
           player_id?: string
           presence?: string
+          queue_index?: number | null
           queue_position?: number
+          queue_status?: string
           saves?: number
           shots_on_goal?: number
           tackles?: number
@@ -207,6 +216,7 @@ export type Database = {
       }
       matches: {
         Row: {
+          arrival_counter: number
           created_at: string | null
           creator_id: string | null
           finished_at: string | null
@@ -222,6 +232,7 @@ export type Database = {
           voting_closed: boolean
         }
         Insert: {
+          arrival_counter?: number
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
@@ -237,6 +248,7 @@ export type Database = {
           voting_closed?: boolean
         }
         Update: {
+          arrival_counter?: number
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
@@ -297,6 +309,7 @@ export type Database = {
     }
     Functions: {
       close_voting: { Args: { _match: string }; Returns: undefined }
+      fifo_size: { Args: { _modality: string }; Returns: number }
       is_match_creator: { Args: { _match: string }; Returns: boolean }
       is_match_player: {
         Args: { _match: string; _user: string }
@@ -320,6 +333,15 @@ export type Database = {
           eligible: number
           voters: number
         }[]
+      }
+      reflow_match_queue: { Args: { _match: string }; Returns: undefined }
+      remove_match_player: {
+        Args: { _match: string; _player: string }
+        Returns: undefined
+      }
+      save_match_draw: {
+        Args: { _match: string; _teams: Json }
+        Returns: undefined
       }
       set_presence: {
         Args: { _match: string; _presence: string }

@@ -22,6 +22,27 @@
       "when": 1791849009926,
       "tag": "0002_atomic_match_event_stats",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791853045036,
+      "tag": "0003_dynamic_fifo_lineups",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791853155154,
+      "tag": "0004_event_undo_after_substitution",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791853244707,
+      "tag": "0005_persistent_arrival_counter",
+      "breakpoints": true
     }
   ]
 }

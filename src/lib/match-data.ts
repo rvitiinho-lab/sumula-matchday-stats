@@ -4,6 +4,9 @@ import type { Team } from "./draw";
 export interface MatchPlayer {
   player_id: string;
   queue_position: number;
+  arrival_order?: number | null;
+  queue_status?: string;
+  queue_index?: number | null;
   team: Team;
   presence: string;
   goals: number;
@@ -29,12 +32,12 @@ export const EVENT_LABEL: Record<EventType, string> = {
 export const POSITIONS = ["GOL", "ZAG", "LAT", "VOL", "MEI", "ATA"] as const;
 
 const PLAYER_COLS =
-  "player_id, queue_position, team, presence, goals, assists, tackles, shots_on_goal, fouls_suffered, fouls_committed, saves, profile:profiles(nome, apelido, overall_rating, quote, position)";
+  "player_id, queue_position, arrival_order, queue_status, queue_index, team, presence, goals, assists, tackles, shots_on_goal, fouls_suffered, fouls_committed, saves, profile:profiles(nome, apelido, overall_rating, quote, position)";
 
 export async function loadMatch(id: string) {
   const [matchResponse, playersResponse] = await Promise.all([
     supabase.from("matches").select("*").eq("id", id).maybeSingle(),
-    supabase.from("match_players").select(PLAYER_COLS).eq("match_id", id).order("queue_position"),
+    supabase.from("match_players").select(PLAYER_COLS).eq("match_id", id).order("arrival_order"),
   ]);
   if (matchResponse.error) throw matchResponse.error;
   if (playersResponse.error) throw playersResponse.error;
