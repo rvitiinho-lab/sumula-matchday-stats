@@ -6,4 +6,4 @@
 - [x] Concluir perfil e saída.
 - [x] Testar navegação e fluxo autenticado.
 - [ ] Verificar votos entre atletas diferentes — depende de um segundo atleta cadastrado; hoje há apenas uma conta.
-- [ ] Cards pós-votação do Craque e Muralha em estilo jornalzinho, frase até 120 caracteres
+- [x] Cards pós-votação do Craque e Muralha em estilo jornalzinho, frase até 120 caracteres
