@@ -36,6 +36,13 @@
       "when": 1791853155154,
       "tag": "0004_event_undo_after_substitution",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791853244707,
+      "tag": "0005_persistent_arrival_counter",
+      "breakpoints": true
     }
   ]
 }

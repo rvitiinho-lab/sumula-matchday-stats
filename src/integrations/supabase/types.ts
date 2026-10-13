@@ -216,6 +216,7 @@ export type Database = {
       }
       matches: {
         Row: {
+          arrival_counter: number
           created_at: string | null
           creator_id: string | null
           finished_at: string | null
@@ -231,6 +232,7 @@ export type Database = {
           voting_closed: boolean
         }
         Insert: {
+          arrival_counter?: number
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
@@ -246,6 +248,7 @@ export type Database = {
           voting_closed?: boolean
         }
         Update: {
+          arrival_counter?: number
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
