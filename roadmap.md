@@ -1,7 +1,8 @@
 # Súmula FC
-- [ ] Fila FIFO persistida e substituição atômica em cascata.
-- [ ] Prancheta tática e drawer dos próximos times no lobby e ao vivo.
-- [ ] Testar formação, remoção e promoção.
+- [x] Fila FIFO persistida e substituição atômica em cascata.
+- [x] Prancheta tática e drawer dos próximos times no lobby e ao vivo.
+- [x] Testar formação e saída, inclusive desfazer lance após saída.
+- [ ] Conferir promoção entre atletas pela interface — depende de outro atleta cadastrado; hoje há uma conta.
 - [x] Concluir Início e entrada após login.
 - [x] Concluir criação, presença e montagem dos times.
 - [x] Concluir partida ao vivo e registro de lances.

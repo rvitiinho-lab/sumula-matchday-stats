@@ -15,7 +15,7 @@ describe("fila FIFO", () => {
   });
   it("não chama um grupo incompleto de próximo time", () => {
     const r = drawTeams(Array.from({length:13},(_,i)=>({id:`p${i+1}`,queue:i+1,overall:70})),5,()=>0.3);
-    expect([r.p11,r.p12,r.p13]).toEqual(["unassigned","unassigned","unassigned"]);
+    expect([r["p11"],r["p12"],r["p13"]]).toEqual(["unassigned","unassigned","unassigned"]);
   });
   it("compacta a fila restante após a promoção do primeiro", () => {
     const q = waitingTeams([player(4),player(3,"colete"),player(6),player(5)],1);

@@ -130,9 +130,9 @@
 .pitch-box-bottom { bottom: 0; border-bottom: 0; }
 .pitch-half { min-height: 205px; padding: 5px 2px 24px; }
 .pitch-half + .pitch-half { padding-top: 24px; padding-bottom: 5px; }
-.pitch-formation { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-items: start; justify-items: center; margin: 20px auto 0; }
-.pitch-player { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100%; max-width: 124px; min-height: 126px; border: 1px solid var(--pitch-line); border-radius: 6px; background: var(--pitch-glass); backdrop-filter: blur(12px); box-shadow: var(--pitch-shadow); padding: 8px 4px; }
+.pitch-formation { display: flex; flex-wrap: wrap; gap: 8px; align-items: start; justify-content: center; margin: 20px auto 0; }
+.pitch-player { display: flex; flex-direction: column; align-items: center; gap: 5px; width: calc((100% - 16px)/3); max-width: 124px; min-height: 126px; border: 1px solid var(--pitch-line); border-radius: 6px; background: var(--pitch-glass); backdrop-filter: blur(12px); box-shadow: var(--pitch-shadow); padding: 8px 4px; }
 .pitch-team-a .pitch-player { border-top: 3px solid var(--primary); }
 .pitch-team-b .pitch-player { border-top: 3px solid var(--cream); }
-@media (min-width: 540px) { .pitch-formation { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; } }
+@media (min-width: 540px) { .pitch-formation { gap: 12px; } .pitch-player { width: calc((100% - 36px)/4); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
