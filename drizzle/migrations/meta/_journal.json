@@ -43,6 +43,13 @@
       "when": 1791853244707,
       "tag": "0005_persistent_arrival_counter",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791857175370,
+      "tag": "0006_automatic_pelada_awards",
+      "breakpoints": true
     }
   ]
 }

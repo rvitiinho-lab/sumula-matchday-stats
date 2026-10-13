@@ -17,6 +17,7 @@ export type Database = {
       match_events: {
         Row: {
           created_at: string
+          difficult_save: boolean
           id: string
           match_id: string
           minute: number
@@ -26,6 +27,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          difficult_save?: boolean
           id?: string
           match_id: string
           minute?: number
@@ -35,6 +37,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          difficult_save?: boolean
           id?: string
           match_id?: string
           minute?: number
@@ -63,6 +66,8 @@ export type Database = {
         Row: {
           arrival_order: number | null
           assists: number | null
+          difficult_saves: number
+          final_team: string | null
           fouls_committed: number
           fouls_suffered: number
           goals: number | null
@@ -76,10 +81,13 @@ export type Database = {
           shots_on_goal: number
           tackles: number
           team: string | null
+          victory_points: number
         }
         Insert: {
           arrival_order?: number | null
           assists?: number | null
+          difficult_saves?: number
+          final_team?: string | null
           fouls_committed?: number
           fouls_suffered?: number
           goals?: number | null
@@ -93,10 +101,13 @@ export type Database = {
           shots_on_goal?: number
           tackles?: number
           team?: string | null
+          victory_points?: number
         }
         Update: {
           arrival_order?: number | null
           assists?: number | null
+          difficult_saves?: number
+          final_team?: string | null
           fouls_committed?: number
           fouls_suffered?: number
           goals?: number | null
@@ -110,6 +121,7 @@ export type Database = {
           shots_on_goal?: number
           tackles?: number
           team?: string | null
+          victory_points?: number
         }
         Relationships: [
           {
@@ -223,6 +235,9 @@ export type Database = {
           id: string
           location: string | null
           modality: string
+          pelada_closed: boolean
+          pelada_id: string | null
+          round_number: number
           scheduled_at: string | null
           score_team_a: number | null
           score_team_b: number | null
@@ -239,6 +254,9 @@ export type Database = {
           id?: string
           location?: string | null
           modality: string
+          pelada_closed?: boolean
+          pelada_id?: string | null
+          round_number?: number
           scheduled_at?: string | null
           score_team_a?: number | null
           score_team_b?: number | null
@@ -255,6 +273,9 @@ export type Database = {
           id?: string
           location?: string | null
           modality?: string
+          pelada_closed?: boolean
+          pelada_id?: string | null
+          round_number?: number
           scheduled_at?: string | null
           score_team_a?: number | null
           score_team_b?: number | null
@@ -267,6 +288,46 @@ export type Database = {
           {
             foreignKeyName: "matches_creator_id_fkey"
             columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_pelada_id_fkey"
+            columns: ["pelada_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pelada_messages: {
+        Row: {
+          message: string
+          pelada_id: string
+          player_id: string
+        }
+        Insert: {
+          message: string
+          pelada_id: string
+          player_id: string
+        }
+        Update: {
+          message?: string
+          pelada_id?: string
+          player_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pelada_messages_pelada_id_fkey"
+            columns: ["pelada_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pelada_messages_player_id_fkey"
+            columns: ["player_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -308,8 +369,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_write_award_message: {
+        Args: { _pelada: string; _player: string }
+        Returns: boolean
+      }
       close_voting: { Args: { _match: string }; Returns: undefined }
       fifo_size: { Args: { _modality: string }; Returns: number }
+      finish_pelada: { Args: { _match: string }; Returns: string }
       is_match_creator: { Args: { _match: string }; Returns: boolean }
       is_match_player: {
         Args: { _match: string; _user: string }
@@ -333,6 +399,32 @@ export type Database = {
           eligible: number
           voters: number
         }[]
+      }
+      next_pelada_round: { Args: { _match: string }; Returns: string }
+      pelada_performances: {
+        Args: { _match: string }
+        Returns: {
+          actions: number
+          match_id: string
+          mvps: number
+          player_id: string
+          points: number
+        }[]
+      }
+      pelada_winner: { Args: { _match: string }; Returns: string }
+      performance_points: {
+        Args: {
+          a: number
+          c: number
+          d: number
+          fc: number
+          fs: number
+          g: number
+          s: number
+          t: number
+          v: number
+        }
+        Returns: number
       }
       reflow_match_queue: { Args: { _match: string }; Returns: undefined }
       remove_match_player: {
