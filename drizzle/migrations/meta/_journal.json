@@ -22,6 +22,13 @@
       "when": 1791849009926,
       "tag": "0002_atomic_match_event_stats",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791853045036,
+      "tag": "0003_dynamic_fifo_lineups",
+      "breakpoints": true
     }
   ]
 }
