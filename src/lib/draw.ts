@@ -10,7 +10,7 @@ export const MODALITIES: { id: Modality; size: number; max: number }[] = [
   { id: "x11", size: 11, max: 88 },
 ];
 
-export const modalityInfo = (m: string) => MODALITIES.find((x) => x.id === m) ?? MODALITIES[2]!;
+export const modalityInfo = (m: string) => MODALITIES.find((x) => x.id === m) ?? { id: "x5" as const, size: 5, max: 40 };
 
 export const TEAM_LABEL: Record<Team, string> = {
   colete: "Colete",
@@ -53,7 +53,7 @@ export function drawTeams(players: DrawPlayer[], size: number, shuffle = Math.ra
   const waits: Team[] = ["proxima_1", "proxima_2", "proxima_3"];
   rest.forEach((p, i) => {
     const t = Math.floor(i / size);
-    result[p.id] = t < 3 ? waits[t]! : "unassigned";
+    result[p.id] = t < Math.min(3, Math.floor(rest.length / size)) ? (waits[t] ?? "unassigned") : "unassigned";
   });
   return result;
 }
