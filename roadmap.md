@@ -1,4 +1,7 @@
 # Súmula FC
+- [ ] Simplificar premiações para MVP automático — analisar dados e apresentar fórmula antes da implementação.
+- [ ] Substituir votação por resultados com MVP, justificativa e card especial; preservar cards e estatísticas individuais.
+- [ ] Testar cálculo e encerramento com dados reais, incluindo ausência de dados e empate.
 - [x] Fila FIFO persistida e substituição atômica em cascata.
 - [x] Prancheta tática e drawer dos próximos times no lobby e ao vivo.
 - [x] Testar formação e saída, inclusive desfazer lance após saída.
