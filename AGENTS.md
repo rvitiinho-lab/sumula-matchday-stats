@@ -16,3 +16,5 @@
 - Internal screens use shared TanStack Query options with loader priming; why: keeps initial reads and post-action refreshes consistent.
 - Live event counters are updated atomically by a database trigger on event insertion/deletion; why: scores and individual statistics cannot partially save.
 - Shared page metadata and match presentation helpers live in focused modules; why: every content screen has consistent metadata and reusable score presentation.
+- Automatic awards use a pure performance module matching database scoring, with shared cards and root-scoped round queries; why: deterministic results stay separate from overall and update for all viewers.
+- Award messages are shared per player and pelada across their award cards; why: the existing root-scoped permission model protects one saved message without extra storage.

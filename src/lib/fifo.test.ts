@@ -3,7 +3,7 @@ import { waitingTeams } from "./fifo";
 import { drawTeams, modalityInfo } from "./draw";
 import type { MatchPlayer } from "./match-data";
 
-const player = (id: number, team: MatchPlayer["team"] = "unassigned"): MatchPlayer => ({ player_id: `p${id}`, arrival_order: id, queue_position: 99-id, team, presence: "confirmed", goals: 0, assists: 0, tackles: 0, shots_on_goal: 0, fouls_suffered: 0, fouls_committed: 0, saves: 0, profile: null });
+const player = (id: number, team: MatchPlayer["team"] = "unassigned"): MatchPlayer => ({ player_id: `p${id}`, arrival_order: id, queue_position: 99-id, team, presence: "confirmed", goals: 0, assists: 0, tackles: 0, shots_on_goal: 0, fouls_suffered: 0, fouls_committed: 0, saves: 0, difficult_saves: 0, final_team: null, victory_points: 0, profile: null });
 describe("fila FIFO", () => {
   it.each([["x1",2],["x5",10],["x6",12]])("%s comporta %i jogadores em campo", (m, capacity) => {
     expect(modalityInfo(String(m)).size * 2).toBe(capacity);
