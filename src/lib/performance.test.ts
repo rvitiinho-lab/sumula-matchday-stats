@@ -1,0 +1,21 @@
+import { describe, expect, it } from "vitest";
+import { points, actions, selectAward, roundPerformances, aggregateNight, messageValid } from "./performance";
+import type { MatchPlayer } from "./match-data";
+const player = (id: string, stats: Partial<MatchPlayer> = {}): MatchPlayer => ({ player_id: id, queue_position: 1, team: "colete", presence: "confirmed", goals: 0, assists: 0, tackles: 0, saves: 0, difficult_saves: 0, shots_on_goal: 0, fouls_suffered: 0, fouls_committed: 0, victory_points: 0, final_team: null, profile: null, ...stats });
+describe("desempenho automático", () => {
+  it.each([["goals",5],["assists",3],["tackles",2],["saves",1],["difficult_saves",2],["shots_on_goal",0.5],["fouls_suffered",0.5],["fouls_committed",-0.5]] as const)("%s tem o peso aprovado %s",(stat,weight)=>{expect(points(player("a",{[stat]:1}))).toBe(weight);});
+  it("vitória vale 2, empate vale 0",()=>{expect(points(player("a",{victory_points:2}))).toBe(2);expect(points(player("b"))).toBe(0);});
+  it("defesa difícil não é contada como defesa comum",()=>{expect(points(player("a",{difficult_saves:3}))).toBe(6);});
+  it("goleiro com três defesas difíceis supera um gol",()=>{const award=selectAward(roundPerformances([player("g",{difficult_saves:3}),player("a",{goals:1})]));expect(award.leaders[0]?.player.player_id).toBe("g");});
+  it("defensor com três desarmes supera um gol",()=>{expect(selectAward(roundPerformances([player("d",{tackles:3}),player("a",{goals:1})])).leaders[0]?.player.player_id).toBe("d");});
+  it("overall não muda o desempenho",()=>{const p=player("a",{goals:1,profile:{nome:"Atleta",apelido:"atleta",overall_rating:99,position:"ATA",quote:null}});expect(points(p)).toBe(5);expect(p.profile?.overall_rating).toBe(99);});
+  it("atleta que saiu continua concorrendo",()=>{expect(selectAward(roundPerformances([player("s",{goals:2,team:"unassigned",presence:"declined"}),player("a",{assists:1})])).leaders[0]?.player.player_id).toBe("s");});
+  it("vitória sozinha não basta",()=>{const p=player("a",{victory_points:2});expect(actions(p)).toBe(0);expect(selectAward(roundPerformances([p,player("b")])).status).toBe("insufficient");});
+  it("precisa de dois atletas com ações",()=>{expect(selectAward(roundPerformances([player("a",{goals:2}),player("b")])).status).toBe("insufficient");});
+  it("não inventa desempate",()=>{expect(selectAward(roundPerformances([player("a",{goals:1}),player("b",{goals:1})])).status).toBe("tie");});
+  it("pontuação não positiva não premia",()=>{expect(selectAward(roundPerformances([player("a",{fouls_committed:1}),player("b",{fouls_committed:2})])).status).toBe("insufficient");});
+  it("soma só rodadas encerradas da mesma pelada e conta MVPs",()=>{const rows=aggregateNight([{match:{id:"root",pelada_id:null,status:"finished"},players:[player("a",{goals:2}),player("b",{goals:1})]},{match:{id:"r2",pelada_id:"root",status:"finished"},players:[player("a",{assists:1}),player("b",{goals:1})]},{match:{id:"other",pelada_id:null,status:"finished"},players:[player("a",{goals:100})]},{match:{id:"r3",pelada_id:"root",status:"in_progress"},players:[player("a",{goals:100})]}],"root");expect(rows.map(r=>[r.player.player_id,r.points,r.mvps])).toEqual([["a",13,1],["b",10,1]]);});
+  it("desempate da noite usa MVPs sem somar bônus",()=>{const rows=roundPerformances([player("a",{goals:1}),player("b",{goals:1})]);const second=rows[1];if(second)second.mvps=2;expect(selectAward(rows,true).leaders[0]?.player.player_id).toBe("b");expect(second?.points).toBe(5);});
+  it("empate persistente na noite não escolhe vencedor",()=>{expect(selectAward(roundPerformances([player("a",{goals:1}),player("b",{goals:1})]),true).status).toBe("tie");});
+  it("recado aceita 120 caracteres e rejeita 121",()=>{expect(messageValid("a".repeat(120))).toBe(true);expect(messageValid("a".repeat(121))).toBe(false);});
+});

@@ -1,7 +1,7 @@
 # Súmula FC
 - [ ] Divulgar automaticamente os prêmios para todos ao encerrar a pelada; vitória +2, defesa comum +1 e defesa difícil +2 com registro explícito.
-- [ ] Incluir Melhor da Noite por desempenho acumulado e MVPs calculados, com card e recado — definir agrupamento dos jogos da pelada.
-- [ ] Simplificar premiações para MVP automático — analisar dados e apresentar fórmula antes da implementação.
+- [x] Incluir Melhor da Noite por desempenho acumulado nas rodadas da mesma pelada, com card e recado.
+- [x] Simplificar premiações para MVP automático com fórmula aprovada.
 - [ ] Substituir votação por resultados com MVP, justificativa e card especial; preservar cards e estatísticas individuais.
 - [ ] Testar cálculo e encerramento com dados reais, incluindo ausência de dados e empate.
 - [x] Fila FIFO persistida e substituição atômica em cascata.
@@ -14,5 +14,4 @@
 - [x] Concluir avaliação, resultados e compartilhamento.
 - [x] Concluir perfil e saída.
 - [x] Testar navegação e fluxo autenticado.
-- [ ] Verificar votos entre atletas diferentes — depende de um segundo atleta cadastrado; hoje há apenas uma conta.
-- [x] Cards pós-votação do Craque e Muralha em estilo jornalzinho, frase até 120 caracteres
+- [x] Retirar votação e premiações antigas da experiência, mantendo dados históricos.
