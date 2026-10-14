@@ -16,6 +16,9 @@ export interface MatchPlayer {
   fouls_suffered: number;
   fouls_committed: number;
   saves: number;
+  difficult_saves: number;
+  final_team: string | null;
+  victory_points: number;
   profile: { nome: string; apelido: string; overall_rating: number; quote: string | null; position: string } | null;
 }
 
@@ -32,7 +35,7 @@ export const EVENT_LABEL: Record<EventType, string> = {
 export const POSITIONS = ["GOL", "ZAG", "LAT", "VOL", "MEI", "ATA"] as const;
 
 const PLAYER_COLS =
-  "player_id, queue_position, arrival_order, queue_status, queue_index, team, presence, goals, assists, tackles, shots_on_goal, fouls_suffered, fouls_committed, saves, profile:profiles(nome, apelido, overall_rating, quote, position)";
+   "player_id, queue_position, arrival_order, queue_status, queue_index, team, presence, goals, assists, tackles, shots_on_goal, fouls_suffered, fouls_committed, saves, difficult_saves, final_team, victory_points, profile:profiles(nome, apelido, overall_rating, quote, position)";
 
 export async function loadMatch(id: string) {
   const [matchResponse, playersResponse] = await Promise.all([

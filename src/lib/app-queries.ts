@@ -14,13 +14,17 @@ export const accountQuery = () => queryOptions({ queryKey: ["account"], queryFn:
   if (stats.error) throw stats.error;
   return { user: { id: data.user.id, email: data.user.email }, profile: profile.data, matches, stats: stats.data ?? [] };
 } });
-export const reviewQuery = (id: string) => queryOptions({ queryKey: ["review", id], queryFn: async () => {
-  const [ratings, votes, results, progress] = await Promise.all([
-    supabase.from("match_ratings").select("*").eq("match_id", id),
-    supabase.from("match_votes").select("*").eq("match_id", id),
-    supabase.rpc("match_results", { _match: id }),
-    supabase.rpc("match_voting_progress", { _match: id }),
+export const peladaQuery = (id: string) => queryOptions({ queryKey: ["pelada", id], refetchInterval: 3000, queryFn: async () => {
+  const current = await loadMatch(id);
+  if (!current.match) return { root: id, closed: false, rounds: [], messages: [] };
+  const root = current.match.pelada_id ?? current.match.id;
+  const [matches, messages] = await Promise.all([
+    supabase.from("matches").select("*").or(`id.eq.${root},pelada_id.eq.${root}`).order("round_number"),
+    supabase.from("pelada_messages").select("*").eq("pelada_id", root),
   ]);
-  for (const response of [ratings, votes, results, progress]) if (response.error) throw response.error;
-  return { ratings: ratings.data ?? [], votes: votes.data ?? [], results: results.data ?? [], progress: progress.data?.[0] };
+  if (matches.error) throw matches.error;
+  if (messages.error) throw messages.error;
+  const loaded = await Promise.all((matches.data ?? []).map(m => loadMatch(m.id)));
+  const rounds = loaded.flatMap(r => r.match ? [{ match: r.match, players: r.players }] : []);
+  return { root, closed: matches.data?.find(m => m.id === root)?.pelada_closed ?? false, rounds, messages: messages.data ?? [] };
 } });
