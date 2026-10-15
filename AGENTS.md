@@ -24,3 +24,6 @@
 - Tournament result writes include optional individual scorers atomically; why: team history and top scorers use recorded data rather than estimates.
 - Social lookup pages are authenticated and follow lists are owner-scoped; why: search and comparisons respect the selected visibility boundaries.
 - Profile achievements use pure history thresholds and existing automatic award selection, with a separate canvas Stories exporter; why: prevents invented awards and keeps export independent of profile storage.
+- Competitive ranking is derived by an authenticated database read function and independently tested pure scoring helpers; why: rankings cannot accept browser-supplied scores or alter MVP and OVR.
+- Organizer corrections use an audited operation and event writes reuse a stable operation ID; why: legitimate corrections remain available while direct counter edits and retry duplicates cannot silently affect competitive results.
+- Ranking components and scoped query hook are separate from match screens, with authenticated read-only athlete profiles; why: future ranking scopes can reuse data and presentation without expanding editing permissions.

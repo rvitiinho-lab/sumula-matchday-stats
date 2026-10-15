@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { BarChart3, Home, User, ArrowLeft } from "lucide-react";
+import { BarChart3, Home, User, ArrowLeft, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function AppShell({ title, back, children, action }: { title?: string; back?: ReactNode; children: ReactNode; action?: ReactNode }) {
@@ -28,13 +28,14 @@ function BottomNav() {
   const items = [
     { to: "/home", label: "Início", icon: Home },
     { to: "/results", label: "Resultados", icon: BarChart3 },
+    { to: "/ranking", label: "Ranking", icon: Trophy },
     { to: "/profile", label: "Perfil", icon: User },
   ] as const;
   return (
     <nav aria-label="Navegação principal" className="fixed inset-x-0 bottom-0 z-40 border-t bg-ink px-4 pb-3 pt-2 text-ink-foreground">
       <div className="mx-auto flex max-w-md items-center justify-around p-2">
         {items.map(({ to, label, icon: Icon }) => (
-          <Link key={to} to={to} className="flex flex-1 items-center justify-center gap-2 rounded-full px-3 py-2.5 text-sm font-bold opacity-70"
+          <Link key={to} to={to} className="flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1 py-2.5 text-[10px] font-bold opacity-70 sm:flex-row sm:gap-2 sm:px-3 sm:text-sm"
             activeProps={{ className: "bg-primary text-primary-foreground !opacity-100" }}>
             <Icon className="h-4 w-4" /> {label}
           </Link>
