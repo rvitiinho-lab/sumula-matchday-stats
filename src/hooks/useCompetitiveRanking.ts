@@ -14,7 +14,7 @@ export const competitiveRankingQuery = (scope: RankingScope = { type: 'global' }
     if (authError || !auth.user) throw new Error('Entre para consultar o ranking.');
     const { data, error } = await supabase.rpc('competitive_ranking');
     if (error) throw new Error('Não foi possível carregar o ranking. Tente novamente.');
-    if (!data || typeof data !== 'object' || Array.isArray(data) || !Array.isArray(data.players) || !Array.isArray(data.excluded)) throw new Error('Resposta do ranking inválida.');
+    if (!data || typeof data !== 'object' || Array.isArray(data) || !Array.isArray(data['players']) || !Array.isArray(data['excluded'])) throw new Error('Resposta do ranking inválida.');
     return { ...(data as unknown as Omit<RankingData, 'userId'>), userId: auth.user.id };
   },
 });
