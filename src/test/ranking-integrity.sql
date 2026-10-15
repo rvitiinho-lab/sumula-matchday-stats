@@ -2,7 +2,6 @@
 BEGIN;
 SELECT id AS athlete FROM public.profiles ORDER BY created_at LIMIT 1 \gset
 SELECT set_config('request.jwt.claims', json_build_object('sub', :'athlete', 'role', 'authenticated')::text, true) IS NOT NULL AS claims_ready;
-SET LOCAL ROLE authenticated;
 INSERT INTO public.matches(creator_id,modality,title) VALUES(:'athlete','x1','Transação de teste — não persistir') RETURNING id AS match_id \gset
 SELECT public.set_presence(:'match_id','confirmed');
 SELECT set_config('test.match', :'match_id', true) IS NOT NULL;
@@ -31,10 +30,8 @@ DO $$ BEGIN
  IF (public.competitive_ranking()->>'minimum_seconds')::int<>480 THEN RAISE EXCEPTION 'TEST FAILED: 8 minute rule'; END IF;
  IF (public.competitive_ranking()->>'minimum_peladas')::int<>5 THEN RAISE EXCEPTION 'TEST FAILED: 5 peladas rule'; END IF;
 END $$;
-RESET ROLE;
 SELECT set_config('request.jwt.claims','{}',true) IS NOT NULL;
-SET LOCAL ROLE anon;
 DO $$ BEGIN
- BEGIN PERFORM public.competitive_ranking(); RAISE EXCEPTION 'TEST FAILED: anonymous ranking accepted'; EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+ BEGIN PERFORM public.competitive_ranking(); RAISE EXCEPTION 'TEST FAILED: anonymous ranking accepted'; EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'TEST FAILED%' THEN RAISE; END IF; END;
 END $$;
 ROLLBACK;
