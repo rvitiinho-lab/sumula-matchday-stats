@@ -23,3 +23,4 @@
 - Match roles are pelada-scoped and clock state is persisted atomically; why: mesário permissions and elapsed time remain consistent across viewers.
 - Tournament result writes include optional individual scorers atomically; why: team history and top scorers use recorded data rather than estimates.
 - Social lookup pages are authenticated and follow lists are owner-scoped; why: search and comparisons respect the selected visibility boundaries.
+- Profile achievements use pure history thresholds and existing automatic award selection, with a separate canvas Stories exporter; why: prevents invented awards and keeps export independent of profile storage.
