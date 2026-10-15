@@ -1,4 +1,5 @@
 # Súmula FC
+- [ ] Implementar Ranking Global após aprovação da análise, fórmula, qualificação, desempates e controles de integridade.
 - [x] Aplicar tema carbono/neon global e perfil com carta exportável, estatísticas e conquistas reais.
 - [x] Validar salvamento do perfil, exportação Stories e layout sem sobreposição.
 - [x] Integrar quatro ações rápidas e sorteio avulso; dentro da pelada somente confirmados.
