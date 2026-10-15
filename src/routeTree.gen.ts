@@ -15,10 +15,12 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedFriendsRouteImport } from './routes/_authenticated/friends'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
 import { Route as AuthenticatedResultsRouteImport } from './routes/_authenticated/results'
 import { Route as AuthenticatedTournamentsRouteImport } from './routes/_authenticated/tournaments'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as LobbyMatchIdRouteImport } from './routes/lobby.$matchId'
+import { Route as AuthenticatedAthletePlayerIdRouteImport } from './routes/_authenticated/athlete.$playerId'
 import { Route as AuthenticatedMatchCreateRouteImport } from './routes/_authenticated/match.create'
 import { Route as AuthenticatedTournamentTournamentIdRouteImport } from './routes/_authenticated/tournament.$tournamentId'
 import { Route as MatchLiveMatchIdRouteImport } from './routes/match.live.$matchId'
@@ -54,6 +56,11 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRankingRoute = AuthenticatedRankingRouteImport.update({
+  id: '/ranking',
+  path: '/ranking',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedResultsRoute = AuthenticatedResultsRouteImport.update({
   id: '/results',
   path: '/results',
@@ -75,6 +82,12 @@ const LobbyMatchIdRoute = LobbyMatchIdRouteImport.update({
   path: '/lobby/$matchId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAthletePlayerIdRoute =
+  AuthenticatedAthletePlayerIdRouteImport.update({
+    id: '/athlete/$playerId',
+    path: '/athlete/$playerId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMatchCreateRoute =
   AuthenticatedMatchCreateRouteImport.update({
     id: '/match/create',
@@ -109,10 +122,12 @@ export interface FileRoutesByFullPath {
   '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/ranking': typeof AuthenticatedRankingRoute
   '/results': typeof AuthenticatedResultsRoute
   '/tournaments': typeof AuthenticatedTournamentsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
+  '/athlete/$playerId': typeof AuthenticatedAthletePlayerIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
   '/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
@@ -125,10 +140,12 @@ export interface FileRoutesByTo {
   '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/ranking': typeof AuthenticatedRankingRoute
   '/results': typeof AuthenticatedResultsRoute
   '/tournaments': typeof AuthenticatedTournamentsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
+  '/athlete/$playerId': typeof AuthenticatedAthletePlayerIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
   '/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
@@ -143,10 +160,12 @@ export interface FileRoutesById {
   '/_authenticated/friends': typeof AuthenticatedFriendsRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/results': typeof AuthenticatedResultsRoute
   '/_authenticated/tournaments': typeof AuthenticatedTournamentsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
+  '/_authenticated/athlete/$playerId': typeof AuthenticatedAthletePlayerIdRoute
   '/_authenticated/match/create': typeof AuthenticatedMatchCreateRoute
   '/_authenticated/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
@@ -161,10 +180,12 @@ export interface FileRouteTypes {
     | '/friends'
     | '/home'
     | '/profile'
+    | '/ranking'
     | '/results'
     | '/tournaments'
     | '/auth/register'
     | '/lobby/$matchId'
+    | '/athlete/$playerId'
     | '/match/create'
     | '/tournament/$tournamentId'
     | '/match/live/$matchId'
@@ -177,10 +198,12 @@ export interface FileRouteTypes {
     | '/friends'
     | '/home'
     | '/profile'
+    | '/ranking'
     | '/results'
     | '/tournaments'
     | '/auth/register'
     | '/lobby/$matchId'
+    | '/athlete/$playerId'
     | '/match/create'
     | '/tournament/$tournamentId'
     | '/match/live/$matchId'
@@ -194,10 +217,12 @@ export interface FileRouteTypes {
     | '/_authenticated/friends'
     | '/_authenticated/home'
     | '/_authenticated/profile'
+    | '/_authenticated/ranking'
     | '/_authenticated/results'
     | '/_authenticated/tournaments'
     | '/auth/register'
     | '/lobby/$matchId'
+    | '/_authenticated/athlete/$playerId'
     | '/_authenticated/match/create'
     | '/_authenticated/tournament/$tournamentId'
     | '/match/live/$matchId'
@@ -259,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/ranking': {
+      id: '/_authenticated/ranking'
+      path: '/ranking'
+      fullPath: '/ranking'
+      preLoaderRoute: typeof AuthenticatedRankingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/results': {
       id: '/_authenticated/results'
       path: '/results'
@@ -286,6 +318,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/lobby/$matchId'
       preLoaderRoute: typeof LobbyMatchIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/athlete/$playerId': {
+      id: '/_authenticated/athlete/$playerId'
+      path: '/athlete/$playerId'
+      fullPath: '/athlete/$playerId'
+      preLoaderRoute: typeof AuthenticatedAthletePlayerIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/match/create': {
       id: '/_authenticated/match/create'
@@ -329,8 +368,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFriendsRoute: typeof AuthenticatedFriendsRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedResultsRoute: typeof AuthenticatedResultsRoute
   AuthenticatedTournamentsRoute: typeof AuthenticatedTournamentsRoute
+  AuthenticatedAthletePlayerIdRoute: typeof AuthenticatedAthletePlayerIdRoute
   AuthenticatedMatchCreateRoute: typeof AuthenticatedMatchCreateRoute
   AuthenticatedTournamentTournamentIdRoute: typeof AuthenticatedTournamentTournamentIdRoute
 }
@@ -339,8 +380,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFriendsRoute: AuthenticatedFriendsRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedResultsRoute: AuthenticatedResultsRoute,
   AuthenticatedTournamentsRoute: AuthenticatedTournamentsRoute,
+  AuthenticatedAthletePlayerIdRoute: AuthenticatedAthletePlayerIdRoute,
   AuthenticatedMatchCreateRoute: AuthenticatedMatchCreateRoute,
   AuthenticatedTournamentTournamentIdRoute:
     AuthenticatedTournamentTournamentIdRoute,
