@@ -37,29 +37,32 @@
 }
 
 :root {
-  --radius: 1rem;
-  --background: oklch(0.18 0.01 145);
-  --foreground: oklch(0.97 0.01 110);
-  --card: oklch(0.225 0.012 145);
-  --card-foreground: oklch(0.97 0.01 110);
-  --popover: oklch(0.225 0.012 145);
+  --radius: 0.5rem;
+  --background: oklch(0.145 0.008 255);
+  --foreground: oklch(0.97 0.004 110);
+  --card: oklch(0.205 0.008 255 / 82%);
+  --card-foreground: oklch(0.97 0.004 110);
+  --popover: oklch(0.205 0.008 255);
   --popover-foreground: oklch(0.97 0.01 110);
-  --primary: oklch(0.87 0.17 135);
-  --primary-foreground: oklch(0.18 0.01 145);
-  --secondary: oklch(0.27 0.012 145);
+  --primary: oklch(0.768 0.233 130.85);
+  --primary-foreground: oklch(0.145 0.008 255);
+  --secondary: oklch(0.25 0.008 255);
   --secondary-foreground: oklch(0.97 0.01 110);
-  --muted: oklch(0.26 0.01 145);
-  --muted-foreground: oklch(0.7 0.015 130);
-  --accent: oklch(0.3 0.02 140);
+  --muted: oklch(0.24 0.008 255);
+  --muted-foreground: oklch(0.7 0.008 255);
+  --accent: oklch(0.29 0.024 135);
   --accent-foreground: oklch(0.97 0.01 110);
   --destructive: oklch(0.65 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.87 0.17 135);
-  --cream: oklch(0.96 0.018 100);
-  --cream-foreground: oklch(0.18 0.01 145);
-  --cream-muted: oklch(0.45 0.02 110);
+  --border: oklch(0.5 0.025 135 / 28%);
+  --input: oklch(0.5 0.025 135 / 38%);
+  --ring: var(--primary);
+  --cream: oklch(0.205 0.008 255);
+  --cream-foreground: var(--foreground);
+  --cream-muted: var(--muted-foreground);
+  --ambient-light: linear-gradient(135deg, oklch(0.768 0.233 130.85 / 6%), transparent 30%, transparent 75%, oklch(0.768 0.233 130.85 / 4%));
+  --card-glow: 0 14px 48px oklch(0 0 0 / 28%), 0 0 24px oklch(0.768 0.233 130.85 / 7%);
+  --avatar-glow: 0 0 28px oklch(0.768 0.233 130.85 / 18%);
 }
 
 @layer base {
@@ -85,7 +88,7 @@
 }
 
 :root {
-  --ink: oklch(0.21 0.03 150);
+  --ink: oklch(0.165 0.008 255);
   --ink-foreground: oklch(0.97 0.01 110);
 }
 @theme inline {
@@ -93,23 +96,15 @@
   --color-ink-foreground: var(--ink-foreground);
 }
 .theme-cream {
-  --background: oklch(0.965 0.016 100);
-  --foreground: oklch(0.2 0.02 145);
-  --card: oklch(0.99 0.008 100);
-  --card-foreground: oklch(0.2 0.02 145);
-  --popover: oklch(0.99 0.008 100);
-  --popover-foreground: oklch(0.2 0.02 145);
-  --secondary: oklch(0.92 0.02 100);
-  --secondary-foreground: oklch(0.2 0.02 145);
-  --muted: oklch(0.93 0.016 100);
-  --muted-foreground: oklch(0.48 0.02 120);
-  --accent: oklch(0.92 0.03 120);
-  --accent-foreground: oklch(0.2 0.02 145);
-  --border: oklch(0.2 0.02 145 / 12%);
-  --input: oklch(0.2 0.02 145 / 18%);
   background-color: var(--background);
+  background-image: var(--ambient-light);
   color: var(--foreground);
 }
+.bg-card, input { backdrop-filter: blur(16px); }
+input { background-color: var(--card); }
+.fut-card { position: relative; padding: 26px; border: 1px solid color-mix(in oklch, var(--primary) 40%, transparent); border-radius: 8px; background: linear-gradient(155deg, color-mix(in oklch, var(--primary) 8%, var(--card)), var(--card) 60%); backdrop-filter: blur(20px); box-shadow: var(--card-glow); }
+.fut-avatar { box-shadow: var(--avatar-glow); }
+.profile-stat { border: 1px solid var(--border); border-radius: 8px; background: var(--card); backdrop-filter: blur(16px); padding: 18px; min-height: 116px; }
 .sport-action { min-height: 52px; border-radius: 8px; font-weight: 800; white-space: normal; }
 .sport-score { font-family: var(--font-display); font-size: 76px; line-height: 1; }
 .sport-row { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }

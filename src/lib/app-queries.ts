@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { loadMatch, loadMyMatches } from "./match-data";
+import { roundPerformances, selectAward } from "./performance";
 export const matchQuery = (id: string) => queryOptions({ queryKey: ["match", id], queryFn: () => loadMatch(id) });
 export const accountQuery = () => queryOptions({ queryKey: ["account"], queryFn: async () => {
   const { data, error } = await supabase.auth.getUser();
@@ -12,7 +13,10 @@ export const accountQuery = () => queryOptions({ queryKey: ["account"], queryFn:
   ]);
   if (profile.error) throw profile.error;
   if (stats.error) throw stats.error;
-  return { user: { id: data.user.id, email: data.user.email }, profile: profile.data, matches, stats: stats.data ?? [] };
+  const finishedIds = (stats.data ?? []).filter(s => s.match?.status === "finished").map(s => s.match_id);
+  const rounds = await Promise.all(finishedIds.map(id => loadMatch(id)));
+  const mvps = rounds.reduce((total, round) => { const award = selectAward(roundPerformances(round.players)); return total + (award.status === "winner" && award.leaders[0]?.player.player_id === data.user.id ? 1 : 0); }, 0);
+  return { user: { id: data.user.id, email: data.user.email }, profile: profile.data, matches, stats: stats.data ?? [], mvps };
 } });
 export const peladaQuery = (id: string) => queryOptions({ queryKey: ["pelada", id], refetchInterval: 3000, queryFn: async () => {
   const current = await loadMatch(id);
