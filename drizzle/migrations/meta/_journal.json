@@ -64,6 +64,13 @@
       "when": 1792024102039,
       "tag": "0008_crest_permissions_and_clock_finish",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792024271699,
+      "tag": "0009_tournament_individual_goals",
+      "breakpoints": true
     }
   ]
 }
