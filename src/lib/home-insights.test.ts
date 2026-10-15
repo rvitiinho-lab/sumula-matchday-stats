@@ -24,6 +24,10 @@ describe('Home insights', () => {
     const m = match('open',undefined,{status:'open'});
     expect(personalEvolution([{...player('me'),match_id:m.id}],[m],0,now).streak).toBe(0);
   });
+  it('confirmed reserves without recorded participation do not extend the streak', () => {
+    const m=match('reserve');
+    expect(personalEvolution([{...player('me',{final_team:null}),match_id:m.id}],[m],0,now).streak).toBe(0);
+  });
   it('uses existing achievement targets', () => {
     const m=match('one'); const result=personalEvolution([{...player('me'),match_id:m.id}],[m],0,now);
     expect(result.nextAchievement?.id).toBe('regular'); expect(result.nextAchievement?.target).toBe(5); expect(result.nextAchievement?.progress).toBe(1);

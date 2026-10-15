@@ -1,4 +1,4 @@
-import { points, roundPerformances, selectAward } from './performance';
+import { actions, points, roundPerformances, selectAward } from './performance';
 import { careerAchievements, type CareerStats } from './profile-achievements';
 import type { MatchPlayer, MatchRow } from './match-data';
 
@@ -37,7 +37,7 @@ export function personalEvolution(stats: HomeStat[], matches: MatchRow[], mvps: 
   const recent = completed.filter(r => r.date).sort((a,b) => (a.date ?? '').localeCompare(b.date ?? '')).slice(-5).map(r => ({ id: r.match.id, date: r.date ?? '', points: points(r.stat) }));
   const monthly = completed.filter(r => inCurrentMonth(r.date, now) && r.stat.presence === 'confirmed' && (r.stat.final_team === 'colete' || r.stat.final_team === 'sem_colete') && r.match.score_team_a !== null && r.match.score_team_b !== null);
   const wins = monthly.filter(r => r.stat.final_team === 'colete' ? (r.match.score_team_a ?? 0) > (r.match.score_team_b ?? 0) : (r.match.score_team_b ?? 0) > (r.match.score_team_a ?? 0)).length;
-  const played = completed.filter(r => r.stat.presence === 'confirmed' || r.stat.final_team === 'colete' || r.stat.final_team === 'sem_colete' || points(r.stat) !== 0);
+  const played = completed.filter(r => r.stat.final_team === 'colete' || r.stat.final_team === 'sem_colete' || actions(r.stat) > 0);
   return { recent, nextAchievement, monthlyGames: monthly.length, wins, winRate: monthly.length ? Math.round(wins / monthly.length * 100) : null, streak: consecutiveWeeks(played.flatMap(r => r.date ? [r.date] : []), now) };
 }
 export type GazetteStory = { id: string; kind: 'goals' | 'saves' | 'mvp'; name: string; value: number; matchId: string; tied: boolean };
