@@ -50,6 +50,13 @@
       "when": 1791857175370,
       "tag": "0006_automatic_pelada_awards",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792023330964,
+      "tag": "0007_modules_roles_tournaments_social",
+      "breakpoints": true
     }
   ]
 }
