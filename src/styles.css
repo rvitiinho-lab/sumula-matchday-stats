@@ -69,6 +69,7 @@
   * { border-color: var(--color-border); }
   body {
     background-color: var(--color-background);
+    background-image: var(--ambient-light);
     color: var(--color-foreground);
     font-family: var(--font-sans);
   }
@@ -104,6 +105,10 @@
 input { background-color: var(--card); }
 .fut-card { position: relative; padding: 26px; border: 1px solid color-mix(in oklch, var(--primary) 40%, transparent); border-radius: 8px; background: linear-gradient(155deg, color-mix(in oklch, var(--primary) 8%, var(--card)), var(--card) 60%); backdrop-filter: blur(20px); box-shadow: var(--card-glow); }
 .fut-avatar { box-shadow: var(--avatar-glow); }
+progress { appearance: none; border: 0; border-radius: 2px; background: var(--secondary); overflow: hidden; }
+progress::-webkit-progress-bar { background: var(--secondary); }
+progress::-webkit-progress-value { background: var(--primary); }
+progress::-moz-progress-bar { background: var(--primary); }
 .profile-stat { border: 1px solid var(--border); border-radius: 8px; background: var(--card); backdrop-filter: blur(16px); padding: 18px; min-height: 116px; }
 .sport-action { min-height: 52px; border-radius: 8px; font-weight: 800; white-space: normal; }
 .sport-score { font-family: var(--font-display); font-size: 76px; line-height: 1; }
