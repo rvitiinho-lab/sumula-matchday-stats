@@ -1,4 +1,9 @@
 # Súmula FC
+- [ ] Integrar quatro ações rápidas e sorteio avulso; dentro da pelada somente confirmados.
+- [ ] Implementar até dois mesários por pelada e cronômetro pausável com permissões validadas.
+- [ ] Criar campeonatos de até 32 equipes com elencos, escudos, classificação e mata-mata.
+- [ ] Implementar busca autenticada, seguir atletas/times, raio-X e comparação.
+- [ ] Validar módulos novos e corrigir a conferência pendente de encerramento.
 - [ ] Divulgar automaticamente os prêmios para todos ao encerrar a pelada; vitória +2, defesa comum +1 e defesa difícil +2 com registro explícito.
 - [x] Incluir Melhor da Noite por desempenho acumulado nas rodadas da mesma pelada, com card e recado.
 - [x] Simplificar premiações para MVP automático com fórmula aprovada.

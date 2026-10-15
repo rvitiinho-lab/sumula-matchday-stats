@@ -183,6 +183,39 @@ export type Database = {
           },
         ]
       }
+      match_roles: {
+        Row: {
+          pelada_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          pelada_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          pelada_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_roles_pelada_id_fkey"
+            columns: ["pelada_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_votes: {
         Row: {
           category: string
@@ -229,6 +262,8 @@ export type Database = {
       matches: {
         Row: {
           arrival_counter: number
+          clock_running_at: string | null
+          clock_seconds: number
           created_at: string | null
           creator_id: string | null
           finished_at: string | null
@@ -248,6 +283,8 @@ export type Database = {
         }
         Insert: {
           arrival_counter?: number
+          clock_running_at?: string | null
+          clock_seconds?: number
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
@@ -267,6 +304,8 @@ export type Database = {
         }
         Update: {
           arrival_counter?: number
+          clock_running_at?: string | null
+          clock_seconds?: number
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
@@ -334,6 +373,36 @@ export type Database = {
           },
         ]
       }
+      player_follows: {
+        Row: {
+          follower_id: string
+          player_id: string
+        }
+        Insert: {
+          follower_id: string
+          player_id: string
+        }
+        Update: {
+          follower_id?: string
+          player_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_follows_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_follows_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           apelido: string
@@ -364,16 +433,242 @@ export type Database = {
         }
         Relationships: []
       }
+      sports_teams: {
+        Row: {
+          crest_path: string | null
+          id: string
+          name: string
+          owner_id: string
+          seed: number
+          tournament_id: string
+        }
+        Insert: {
+          crest_path?: string | null
+          id?: string
+          name: string
+          owner_id: string
+          seed: number
+          tournament_id: string
+        }
+        Update: {
+          crest_path?: string | null
+          id?: string
+          name?: string
+          owner_id?: string
+          seed?: number
+          tournament_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sports_teams_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sports_teams_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_follows: {
+        Row: {
+          follower_id: string
+          team_id: string
+        }
+        Insert: {
+          follower_id: string
+          team_id: string
+        }
+        Update: {
+          follower_id?: string
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_follows_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_follows_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "sports_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_roster: {
+        Row: {
+          full_name: string
+          id: string
+          profile_id: string | null
+          shirt_number: number
+          team_id: string
+        }
+        Insert: {
+          full_name: string
+          id?: string
+          profile_id?: string | null
+          shirt_number: number
+          team_id: string
+        }
+        Update: {
+          full_name?: string
+          id?: string
+          profile_id?: string | null
+          shirt_number?: number
+          team_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_roster_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_roster_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "sports_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tournament_games: {
+        Row: {
+          away_id: string | null
+          away_score: number | null
+          home_id: string | null
+          home_score: number | null
+          id: string
+          next_position: number | null
+          next_round: number | null
+          played: boolean
+          position: number
+          round: number
+          tournament_id: string
+          winner_id: string | null
+        }
+        Insert: {
+          away_id?: string | null
+          away_score?: number | null
+          home_id?: string | null
+          home_score?: number | null
+          id?: string
+          next_position?: number | null
+          next_round?: number | null
+          played?: boolean
+          position: number
+          round: number
+          tournament_id: string
+          winner_id?: string | null
+        }
+        Update: {
+          away_id?: string | null
+          away_score?: number | null
+          home_id?: string | null
+          home_score?: number | null
+          id?: string
+          next_position?: number | null
+          next_round?: number | null
+          played?: boolean
+          position?: number
+          round?: number
+          tournament_id?: string
+          winner_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tournament_games_away_id_fkey"
+            columns: ["away_id"]
+            isOneToOne: false
+            referencedRelation: "sports_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tournament_games_home_id_fkey"
+            columns: ["home_id"]
+            isOneToOne: false
+            referencedRelation: "sports_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tournament_games_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tournament_games_winner_id_fkey"
+            columns: ["winner_id"]
+            isOneToOne: false
+            referencedRelation: "sports_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tournaments: {
+        Row: {
+          created_at: string
+          format: string
+          id: string
+          name: string
+          owner_id: string
+        }
+        Insert: {
+          created_at?: string
+          format: string
+          id?: string
+          name: string
+          owner_id: string
+        }
+        Update: {
+          created_at?: string
+          format?: string
+          id?: string
+          name?: string
+          owner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tournaments_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      assign_match_mesario: {
+        Args: { _match: string; _remove?: boolean; _user: string }
+        Returns: undefined
+      }
+      can_operate_match: { Args: { _match: string }; Returns: boolean }
       can_write_award_message: {
         Args: { _pelada: string; _player: string }
         Returns: boolean
       }
       close_voting: { Args: { _match: string }; Returns: undefined }
+      create_tournament: {
+        Args: { _format: string; _games: Json; _name: string; _teams: Json }
+        Returns: string
+      }
       fifo_size: { Args: { _modality: string }; Returns: number }
       finish_pelada: { Args: { _match: string }; Returns: string }
       is_match_creator: { Args: { _match: string }; Returns: boolean }
@@ -401,6 +696,10 @@ export type Database = {
         }[]
       }
       next_pelada_round: { Args: { _match: string }; Returns: string }
+      operate_match_clock: {
+        Args: { _action: string; _match: string }
+        Returns: undefined
+      }
       pelada_performances: {
         Args: { _match: string }
         Returns: {
@@ -433,6 +732,10 @@ export type Database = {
       }
       save_match_draw: {
         Args: { _match: string; _teams: Json }
+        Returns: undefined
+      }
+      save_tournament_score: {
+        Args: { _away: number; _game: string; _home: number; _winner?: string }
         Returns: undefined
       }
       set_presence: {
