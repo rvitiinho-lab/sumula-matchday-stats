@@ -79,6 +79,7 @@ OVR, total de MVPs e quantidade bruta de jogos não desempatarão.
 - Calcular a pontuação em leitura confiável, nunca aceitar pontuação enviada pelo navegador.
 - Conferir cada contador individual e o placar contra os lances persistidos; dados incoerentes ficam fora do ranking, sem corrigir silenciosamente o histórico.
 - Proteger o caminho de gravação contra alterações diretas dos contadores/placar e impedir exclusão de resultados encerrados que já sustentam a classificação. A análise encontrou permissões amplas do criador durante a partida e permissão de apagar peladas; os bloqueios devem preservar as ações legítimas existentes.
+- Preservar a correção legítima de placar e estatísticas pelo organizador, encaminhando-a por operação validada e rastreável; não retirar botões existentes nem simplesmente transformar correções em lances fictícios. Correções sem evidência consistente não entram no ranking. A implementação desse controle será revisada antes de qualquer restrição de gravação.
 - Reutilizar o identificador do lance em tentativas repetidas da mesma operação; gravar uma vez, sem confundir dois gols legítimos no mesmo minuto. Desabilitar o envio enquanto estiver salvando.
 - Validar valores não negativos, tipo de lance, time e atleta ativo, relógio e estado da rodada; encerramento e atualização permanecem atômicos.
 - Deduplicar a leitura por rodada/atleta e agrupar por pelada. Nada será somado novamente a cada atualização da tela.
