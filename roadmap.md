@@ -1,4 +1,6 @@
 # Súmula FC
+- [ ] Reorganizar Início: atleta, próxima pelada, ações, evolução e Gazeta mensal, sem alterar Resultados ou consultas.
+- [ ] Testar indicadores reais, presença e navegação do novo Início.
 - [x] Implementar Ranking Global com regras aprovadas: 8 minutos, 5 peladas, fórmula independente e desempates.
 - [x] Validar ranking vazio, progresso, perfil consultável e navegação no computador/celular; 77 testes passaram.
 - [x] Conferir correção auditada, idempotência de lances, bloqueio de edição direta e acesso sem login; conferências temporárias removidas.
