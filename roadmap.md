@@ -1,4 +1,6 @@
 # Súmula FC
+- [ ] Aplicar tema carbono/neon global e perfil com carta exportável, estatísticas e conquistas reais.
+- [ ] Validar salvamento do perfil, exportação Stories e layout sem sobreposição.
 - [x] Integrar quatro ações rápidas e sorteio avulso; dentro da pelada somente confirmados.
 - [x] Implementar até dois mesários por pelada e cronômetro pausável com permissões validadas.
 - [x] Criar campeonatos de até 32 equipes com elencos, escudos, classificação e mata-mata.
