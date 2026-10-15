@@ -1,14 +1,16 @@
 # Súmula FC
-- [ ] Integrar quatro ações rápidas e sorteio avulso; dentro da pelada somente confirmados.
-- [ ] Implementar até dois mesários por pelada e cronômetro pausável com permissões validadas.
-- [ ] Criar campeonatos de até 32 equipes com elencos, escudos, classificação e mata-mata.
-- [ ] Implementar busca autenticada, seguir atletas/times, raio-X e comparação.
-- [ ] Validar módulos novos e corrigir a conferência pendente de encerramento.
-- [ ] Divulgar automaticamente os prêmios para todos ao encerrar a pelada; vitória +2, defesa comum +1 e defesa difícil +2 com registro explícito.
+- [x] Integrar quatro ações rápidas e sorteio avulso; dentro da pelada somente confirmados.
+- [x] Implementar até dois mesários por pelada e cronômetro pausável com permissões validadas.
+- [x] Criar campeonatos de até 32 equipes com elencos, escudos, classificação e mata-mata.
+- [x] Implementar busca autenticada, seguir atletas/times, raio-X e comparação.
+- [x] Validar sorteio, criação/placar/classificação, acompanhamento, cronômetro e divulgação em duas telas; sem erros de execução.
+- [x] Divulgar automaticamente os prêmios para todos ao encerrar a pelada; vitória +2, defesa comum +1 e defesa difícil +2 com registro explícito.
 - [x] Incluir Melhor da Noite por desempenho acumulado nas rodadas da mesma pelada, com card e recado.
 - [x] Simplificar premiações para MVP automático com fórmula aprovada.
-- [ ] Substituir votação por resultados com MVP, justificativa e card especial; preservar cards e estatísticas individuais.
-- [ ] Testar cálculo e encerramento com dados reais, incluindo ausência de dados e empate.
+- [x] Substituir votação por resultados com MVP, justificativa e card especial; preservar cards e estatísticas individuais.
+- [x] Testar regras de pontuação e empate e encerramento sem dados pela interface.
+- [ ] Conferir MVP vencedor e Melhor da Noite com dois atletas reais — depende de segundo atleta cadastrado.
+- [ ] Conferir mesário e comparação entre dois atletas reais — depende de segundo atleta cadastrado.
 - [x] Fila FIFO persistida e substituição atômica em cascata.
 - [x] Prancheta tática e drawer dos próximos times no lobby e ao vivo.
 - [x] Testar formação e saída, inclusive desfazer lance após saída.
