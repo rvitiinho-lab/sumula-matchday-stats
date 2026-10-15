@@ -1,5 +1,8 @@
 # Súmula FC
-- [ ] Implementar Ranking Global após aprovação da análise, fórmula, qualificação, desempates e controles de integridade.
+- [x] Implementar Ranking Global com regras aprovadas: 8 minutos, 5 peladas, fórmula independente e desempates.
+- [x] Validar ranking vazio, progresso, perfil consultável e navegação no computador/celular; 77 testes passaram.
+- [x] Conferir correção auditada, idempotência de lances, bloqueio de edição direta e acesso sem login; conferências temporárias removidas.
+- [ ] Conferir classificação populada e permissões de mesário/atleta distintos — depende de mais atletas reais e 5 peladas válidas.
 - [x] Aplicar tema carbono/neon global e perfil com carta exportável, estatísticas e conquistas reais.
 - [x] Validar salvamento do perfil, exportação Stories e layout sem sobreposição.
 - [x] Integrar quatro ações rápidas e sorteio avulso; dentro da pelada somente confirmados.

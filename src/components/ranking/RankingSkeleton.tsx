@@ -1,0 +1,3 @@
+export function RankingSkeleton() {
+  return <div role="status" aria-label="Carregando ranking" className="space-y-5 motion-safe:animate-pulse"><div className="h-24 rounded-lg bg-muted"/><div className="h-5 w-40 rounded bg-muted"/>{[0,1,2,3,4].map(i => <div key={i} className="flex items-center gap-4 border-b py-5"><div className="size-10 rounded-full bg-muted"/><div className="h-5 flex-1 rounded bg-muted"/><div className="h-6 w-20 rounded bg-muted"/></div>)}</div>;
+}

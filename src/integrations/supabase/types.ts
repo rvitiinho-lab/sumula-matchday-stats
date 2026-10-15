@@ -264,6 +264,7 @@ export type Database = {
           arrival_counter: number
           clock_running_at: string | null
           clock_seconds: number
+          correction_audit: Json
           created_at: string | null
           creator_id: string | null
           finished_at: string | null
@@ -285,6 +286,7 @@ export type Database = {
           arrival_counter?: number
           clock_running_at?: string | null
           clock_seconds?: number
+          correction_audit?: Json
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
@@ -306,6 +308,7 @@ export type Database = {
           arrival_counter?: number
           clock_running_at?: string | null
           clock_seconds?: number
+          correction_audit?: Json
           created_at?: string | null
           creator_id?: string | null
           finished_at?: string | null
@@ -698,6 +701,16 @@ export type Database = {
         Returns: boolean
       }
       close_voting: { Args: { _match: string }; Returns: undefined }
+      competitive_ranking: { Args: never; Returns: Json }
+      correct_match_record: {
+        Args: {
+          _field: string
+          _match: string
+          _player?: string
+          _value: number
+        }
+        Returns: undefined
+      }
       create_tournament: {
         Args: { _format: string; _games: Json; _name: string; _teams: Json }
         Returns: string
@@ -757,6 +770,18 @@ export type Database = {
           v: number
         }
         Returns: number
+      }
+      record_match_event: {
+        Args: {
+          _difficult?: boolean
+          _id: string
+          _match: string
+          _minute: number
+          _player: string
+          _team: string
+          _type: string
+        }
+        Returns: string
       }
       reflow_match_queue: { Args: { _match: string }; Returns: undefined }
       remove_match_player: {
