@@ -18,7 +18,7 @@ Já existem controles de participante único por rodada, chegada única, número
 
 ## 3. Proposta de partidas válidas e qualificação
 
-Considerar somente rodadas de **peladas encerradas**, com início e fim registrados, pelo menos **10 minutos efetivos no cronômetro**, placar não negativo coerente com os gols registrados e pelo menos um atleta real em cada time.
+Considerar somente rodadas de **peladas encerradas**, com início e fim registrados, pelo menos **8 minutos efetivos no cronômetro**, placar não negativo coerente com os gols registrados e pelo menos um atleta real em cada time.
 
 Uma rodada precisa ter lances registrados por pelo menos **dois atletas distintos**, para não converter encontros sem informação suficiente em resultados competitivos. Um 0×0 pode valer se houver outros lances; um jogo sem lances não vale.
 
