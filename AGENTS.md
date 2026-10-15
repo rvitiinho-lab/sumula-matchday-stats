@@ -27,3 +27,4 @@
 - Competitive ranking is derived by an authenticated database read function and independently tested pure scoring helpers; why: rankings cannot accept browser-supplied scores or alter MVP and OVR.
 - Organizer corrections use an audited operation and event writes reuse a stable operation ID; why: legitimate corrections remain available while direct counter edits and retry duplicates cannot silently affect competitive results.
 - Ranking components and scoped query hook are separate from match screens, with authenticated read-only athlete profiles; why: future ranking scopes can reuse data and presentation without expanding editing permissions.
+- Home presentation lives in focused home components and pure insight helpers reusing unchanged account and pelada queries; why: personal indicators and news remain testable without changing storage or Results.
