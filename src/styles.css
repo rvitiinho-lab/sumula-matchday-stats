@@ -136,3 +136,7 @@
 .pitch-team-b .pitch-player { border-top: 3px solid var(--cream); }
 @media (min-width: 540px) { .pitch-formation { gap: 12px; } .pitch-player { width: calc((100% - 36px)/4); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+.comparison-meter::-webkit-meter-bar { background: var(--secondary); border: 0; border-radius: 2px; }
+.comparison-meter::-webkit-meter-optimum-value { background: var(--primary); }
+.comparison-meter-alt::-webkit-meter-optimum-value { background: var(--ink); }
