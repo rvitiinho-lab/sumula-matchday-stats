@@ -618,6 +618,39 @@ export type Database = {
           },
         ]
       }
+      tournament_goals: {
+        Row: {
+          game_id: string
+          goals: number
+          roster_id: string
+        }
+        Insert: {
+          game_id: string
+          goals: number
+          roster_id: string
+        }
+        Update: {
+          game_id?: string
+          goals?: number
+          roster_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tournament_goals_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "tournament_games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tournament_goals_roster_id_fkey"
+            columns: ["roster_id"]
+            isOneToOne: false
+            referencedRelation: "team_roster"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tournaments: {
         Row: {
           created_at: string
@@ -732,6 +765,16 @@ export type Database = {
       }
       save_match_draw: {
         Args: { _match: string; _teams: Json }
+        Returns: undefined
+      }
+      save_tournament_result: {
+        Args: {
+          _away: number
+          _game: string
+          _goals: Json
+          _home: number
+          _winner?: string
+        }
         Returns: undefined
       }
       save_tournament_score: {

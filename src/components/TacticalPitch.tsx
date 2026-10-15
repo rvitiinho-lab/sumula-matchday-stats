@@ -1,3 +1,4 @@
+import { useUserRole } from "@/hooks/useUserRole";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronUp, LogOut, Users, X } from "lucide-react";
@@ -12,6 +13,7 @@ import type { MatchPlayer, MatchRow } from "@/lib/match-data";
 
 const positions = ["GOL", "ZAG", "LAT", "VOL", "MEI", "ATA"];
 export function TacticalPitch({ match, players, userId, onPlayer }: { match: MatchRow; players: MatchPlayer[]; userId?: string | undefined; onPlayer?: (p: MatchPlayer) => void }) {
+  const {operate} = useUserRole(match);
   const qc = useQueryClient();
   const [busy, setBusy] = useState(false);
   const size = modalityInfo(match.modality).size;
@@ -30,7 +32,7 @@ export function TacticalPitch({ match, players, userId, onPlayer }: { match: Mat
   };
   const card = (p: MatchPlayer, field = false) => <article key={p.player_id} data-player-id={p.player_id} className={field ? "pitch-player" : "flex items-center gap-3 border-b py-3"}>
     {field ? <><Avatar name={p.profile?.apelido || "Atleta"} size={32}/><p className="w-full break-words text-center text-xs font-extrabold leading-tight">{p.profile?.apelido || "Atleta"}</p><div className="flex items-center gap-1"><span className="text-[10px]">{p.profile?.position || "MEI"}</span><OvrBadge value={p.profile?.overall_rating ?? 70} className="min-w-6 text-sm"/></div></> : <><span className="w-6 text-xs text-muted-foreground">{waiting.queued.findIndex(q => q.player_id === p.player_id) + 1}</span><Avatar name={p.profile?.apelido || "Atleta"}/><div className="min-w-0 flex-1"><p className="break-words text-sm font-bold">{p.profile?.apelido}</p><p className="text-xs text-muted-foreground">{p.profile?.position} · chegada {arrival(p)}</p></div><OvrBadge value={p.profile?.overall_rating ?? 70}/></>}
-    {field && onPlayer && creator && match.status === "in_progress" && <Button variant="secondary" size="sm" className="h-6 w-full px-1 text-[10px]" onClick={() => onPlayer(p)} aria-label={`Registrar lance de ${p.profile?.apelido}`}>Lance</Button>}
+    {field && onPlayer && operate && match.status === "in_progress" && <Button variant="secondary" size="sm" className="h-6 w-full px-1 text-[10px]" onClick={() => onPlayer(p)} aria-label={`Registrar lance de ${p.profile?.apelido}`}>Lance</Button>}
     {editable && (creator || p.player_id === userId) && <Button variant="ghost" size={field ? "sm" : "icon"} className={field ? "h-6 w-full gap-1 px-1 text-[10px]" : "shrink-0"} disabled={busy} onClick={() => remove(p)} title={p.player_id === userId ? "Sair do jogo" : "Remover atleta"} aria-label={`${p.player_id === userId ? "Sair do jogo" : "Remover"} ${p.profile?.apelido}`}>
       {p.player_id === userId ? <LogOut className="size-3"/> : <X className="size-3"/>}{field && (p.player_id === userId ? "Sair" : "Remover")}
     </Button>}

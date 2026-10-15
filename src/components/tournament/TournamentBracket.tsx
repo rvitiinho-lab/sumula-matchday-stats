@@ -1,0 +1,2 @@
+import type { ReactNode } from 'react';
+export function TournamentBracket({rounds,render}:{rounds:number[];render:(round:number)=>ReactNode}){const last=Math.max(...rounds);return <div className="flex gap-6 overflow-x-auto py-3">{rounds.map(r=><section key={r} className="w-64 shrink-0"><h3 className="mb-4 text-xl">{last-r===0?'Final':last-r===1?'Semifinal':last-r===2?'Quartas':last-r===3?'Oitavas':'Fase inicial'}</h3><div className="space-y-4 border-l-2 border-primary pl-3">{render(r)}</div></section>)}</div>;}

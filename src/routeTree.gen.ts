@@ -12,12 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedFriendsRouteImport } from './routes/_authenticated/friends'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedResultsRouteImport } from './routes/_authenticated/results'
+import { Route as AuthenticatedTournamentsRouteImport } from './routes/_authenticated/tournaments'
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as LobbyMatchIdRouteImport } from './routes/lobby.$matchId'
 import { Route as AuthenticatedMatchCreateRouteImport } from './routes/_authenticated/match.create'
+import { Route as AuthenticatedTournamentTournamentIdRouteImport } from './routes/_authenticated/tournament.$tournamentId'
 import { Route as MatchLiveMatchIdRouteImport } from './routes/match.live.$matchId'
 import { Route as MatchReviewMatchIdRouteImport } from './routes/match.review.$matchId'
 import { Route as MatchSummaryMatchIdRouteImport } from './routes/match.summary.$matchId'
@@ -36,6 +39,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFriendsRoute = AuthenticatedFriendsRouteImport.update({
+  id: '/friends',
+  path: '/friends',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -51,6 +59,12 @@ const AuthenticatedResultsRoute = AuthenticatedResultsRouteImport.update({
   path: '/results',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTournamentsRoute =
+  AuthenticatedTournamentsRouteImport.update({
+    id: '/tournaments',
+    path: '/tournaments',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -65,6 +79,12 @@ const AuthenticatedMatchCreateRoute =
   AuthenticatedMatchCreateRouteImport.update({
     id: '/match/create',
     path: '/match/create',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTournamentTournamentIdRoute =
+  AuthenticatedTournamentTournamentIdRouteImport.update({
+    id: '/tournament/$tournamentId',
+    path: '/tournament/$tournamentId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const MatchLiveMatchIdRoute = MatchLiveMatchIdRouteImport.update({
@@ -86,12 +106,15 @@ const MatchSummaryMatchIdRoute = MatchSummaryMatchIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/results': typeof AuthenticatedResultsRoute
+  '/tournaments': typeof AuthenticatedTournamentsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
+  '/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
   '/match/review/$matchId': typeof MatchReviewMatchIdRoute
   '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
@@ -99,12 +122,15 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/results': typeof AuthenticatedResultsRoute
+  '/tournaments': typeof AuthenticatedTournamentsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
+  '/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
   '/match/review/$matchId': typeof MatchReviewMatchIdRoute
   '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
@@ -114,12 +140,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/_authenticated/friends': typeof AuthenticatedFriendsRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/results': typeof AuthenticatedResultsRoute
+  '/_authenticated/tournaments': typeof AuthenticatedTournamentsRoute
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/_authenticated/match/create': typeof AuthenticatedMatchCreateRoute
+  '/_authenticated/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
   '/match/review/$matchId': typeof MatchReviewMatchIdRoute
   '/match/summary/$matchId': typeof MatchSummaryMatchIdRoute
@@ -129,12 +158,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/friends'
     | '/home'
     | '/profile'
     | '/results'
+    | '/tournaments'
     | '/auth/register'
     | '/lobby/$matchId'
     | '/match/create'
+    | '/tournament/$tournamentId'
     | '/match/live/$matchId'
     | '/match/review/$matchId'
     | '/match/summary/$matchId'
@@ -142,12 +174,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/friends'
     | '/home'
     | '/profile'
     | '/results'
+    | '/tournaments'
     | '/auth/register'
     | '/lobby/$matchId'
     | '/match/create'
+    | '/tournament/$tournamentId'
     | '/match/live/$matchId'
     | '/match/review/$matchId'
     | '/match/summary/$matchId'
@@ -156,12 +191,15 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/friends'
     | '/_authenticated/home'
     | '/_authenticated/profile'
     | '/_authenticated/results'
+    | '/_authenticated/tournaments'
     | '/auth/register'
     | '/lobby/$matchId'
     | '/_authenticated/match/create'
+    | '/_authenticated/tournament/$tournamentId'
     | '/match/live/$matchId'
     | '/match/review/$matchId'
     | '/match/summary/$matchId'
@@ -200,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/friends': {
+      id: '/_authenticated/friends'
+      path: '/friends'
+      fullPath: '/friends'
+      preLoaderRoute: typeof AuthenticatedFriendsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/home': {
       id: '/_authenticated/home'
       path: '/home'
@@ -221,6 +266,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedResultsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tournaments': {
+      id: '/_authenticated/tournaments'
+      path: '/tournaments'
+      fullPath: '/tournaments'
+      preLoaderRoute: typeof AuthenticatedTournamentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/auth/register': {
       id: '/auth/register'
       path: '/register'
@@ -240,6 +292,13 @@ declare module '@tanstack/react-router' {
       path: '/match/create'
       fullPath: '/match/create'
       preLoaderRoute: typeof AuthenticatedMatchCreateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tournament/$tournamentId': {
+      id: '/_authenticated/tournament/$tournamentId'
+      path: '/tournament/$tournamentId'
+      fullPath: '/tournament/$tournamentId'
+      preLoaderRoute: typeof AuthenticatedTournamentTournamentIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/match/live/$matchId': {
@@ -267,17 +326,24 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedFriendsRoute: typeof AuthenticatedFriendsRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedResultsRoute: typeof AuthenticatedResultsRoute
+  AuthenticatedTournamentsRoute: typeof AuthenticatedTournamentsRoute
   AuthenticatedMatchCreateRoute: typeof AuthenticatedMatchCreateRoute
+  AuthenticatedTournamentTournamentIdRoute: typeof AuthenticatedTournamentTournamentIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedFriendsRoute: AuthenticatedFriendsRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedResultsRoute: AuthenticatedResultsRoute,
+  AuthenticatedTournamentsRoute: AuthenticatedTournamentsRoute,
   AuthenticatedMatchCreateRoute: AuthenticatedMatchCreateRoute,
+  AuthenticatedTournamentTournamentIdRoute:
+    AuthenticatedTournamentTournamentIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
