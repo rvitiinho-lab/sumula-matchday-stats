@@ -1,11 +1,12 @@
 import { Link } from '@tanstack/react-router';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Check, Clock3, Flame, Plus, X } from 'lucide-react';
+import { ArrowUpRight, Check, Clock3, Flame, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { AppShell, Avatar, OvrBadge } from '@/components/AppShell';
 import { MatchDetails } from '@/components/MatchUI';
 import { Button } from '@/components/ui/button';
+import { JoinByCode } from './JoinByCode';
 import { QuickActions } from './QuickActions';
 import { UserEvolutionWidget } from './UserEvolutionWidget';
 import { ResenhaGazette } from './ResenhaGazette';
