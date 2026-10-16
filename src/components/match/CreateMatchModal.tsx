@@ -1,0 +1,3 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { CreateMatchForm } from './CreateMatchForm';
+export function CreateMatchModal({open,onOpenChange}:{open:boolean;onOpenChange:(open:boolean)=>void}) { return <Dialog open={open} onOpenChange={onOpenChange}><DialogContent aria-describedby={undefined} className="max-h-[90dvh] w-[calc(100%-2rem)] overflow-y-auto rounded-lg"><DialogHeader><DialogTitle className="font-display text-3xl">Criar pelada</DialogTitle></DialogHeader>{open&&<CreateMatchForm onOpened={()=>onOpenChange(false)}/>}</DialogContent></Dialog>; }
