@@ -28,3 +28,5 @@
 - Organizer corrections use an audited operation and event writes reuse a stable operation ID; why: legitimate corrections remain available while direct counter edits and retry duplicates cannot silently affect competitive results.
 - Ranking components and scoped query hook are separate from match screens, with authenticated read-only athlete profiles; why: future ranking scopes can reuse data and presentation without expanding editing permissions.
 - Home presentation lives in focused home components and pure insight helpers reusing unchanged account and pelada queries; why: personal indicators and news remain testable without changing storage or Results.
+- Creation uses a shared form and atomic create_pelada operation, with the lobby in MatchLobby and a scoped synchronization hook; why: modal and direct creation cannot diverge or partially save participation.
+- Lobby chat uses dedicated participant-scoped storage, database moderation and matching pure client checks; why: award messages remain untouched and browser bypasses cannot expose or send unauthorized chat.
