@@ -1,4 +1,6 @@
 # Súmula FC
+- [ ] Implementar criação por modal no Início, compartilhamento WhatsApp, lobby com FIFO automático e chat moderado — aguardando definição de acesso ao chat e autorização das alterações necessárias.
+- [ ] Validar criação → link → presença/fila → sorteio/início e chat em tempo real, preservando Resultados e Ranking.
 - [x] Reorganizar Início: atleta, próxima pelada, ações, evolução e Gazeta mensal, sem alterar Resultados ou consultas.
 - [x] Testar indicadores reais, presença salva e restaurada, ações, histórico preservado e Início sem transbordamento no computador/celular.
 - [x] Implementar Ranking Global com regras aprovadas: 8 minutos, 5 peladas, fórmula independente e desempates.
