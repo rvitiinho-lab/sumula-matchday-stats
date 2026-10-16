@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      match_chat_messages: {
+        Row: {
+          created_at: string
+          id: string
+          match_id: string
+          message: string
+          player_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_id: string
+          message: string
+          player_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_id?: string
+          message?: string
+          player_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_chat_messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "match_chat_messages_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_events: {
         Row: {
           created_at: string
@@ -695,6 +734,7 @@ export type Database = {
         Args: { _match: string; _remove?: boolean; _user: string }
         Returns: undefined
       }
+      can_access_match_chat: { Args: { _match: string }; Returns: boolean }
       can_operate_match: { Args: { _match: string }; Returns: boolean }
       can_write_award_message: {
         Args: { _pelada: string; _player: string }
@@ -711,6 +751,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      create_pelada: {
+        Args: {
+          _location?: string
+          _modality: string
+          _scheduled?: string
+          _title: string
+        }
+        Returns: string
+      }
       create_tournament: {
         Args: { _format: string; _games: Json; _name: string; _teams: Json }
         Returns: string
@@ -722,6 +771,7 @@ export type Database = {
         Args: { _match: string; _user: string }
         Returns: boolean
       }
+      match_chat_text_allowed: { Args: { _text: string }; Returns: boolean }
       match_results: {
         Args: { _match: string }
         Returns: {

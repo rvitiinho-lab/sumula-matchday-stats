@@ -1,13 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowRight, Users } from "lucide-react";
-import { toast } from "sonner";
-import { AppShell, BackHome, SectionTitle } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
-import { MODALITIES, modalityInfo, type Modality } from "@/lib/draw";
-import { pageHead } from "@/lib/page-head";
-export const Route=createFileRoute("/_authenticated/match/create")({head:()=>pageHead("Criar pelada","Defina a modalidade, data e local da próxima pelada."),component:CreateMatch});
-function CreateMatch(){const navigate=useNavigate();const [modality,setModality]=useState<Modality>("x5");const [title,setTitle]=useState("");const [date,setDate]=useState("");const [location,setLocation]=useState("");const [busy,setBusy]=useState(false);const info=modalityInfo(modality);
-return <AppShell title="Nova pelada" back={<BackHome/>}><p className="text-xs font-bold text-muted-foreground">DO GRUPO PARA O CAMPO</p><h2 className="mt-2 text-4xl">Marca o próximo jogo.</h2><form className="mt-6 space-y-5" onSubmit={async e=>{e.preventDefault();setBusy(true);const {data:u}=await supabase.auth.getUser();if(!u.user){setBusy(false);return void toast.error("Entre na sua conta");}const {data,error}=await supabase.from("matches").insert({creator_id:u.user.id,modality,title:title.trim()||null,scheduled_at:date?new Date(date).toISOString():null,location:location.trim()||null}).select("id").single();if(error||!data){setBusy(false);return void toast.error("Não foi possível criar a pelada");}const {error:joinError}=await supabase.rpc("set_presence",{_match:data.id,_presence:"confirmed"});setBusy(false);if(joinError)toast.error("Pelada criada, mas confirme sua presença no lobby.");navigate({to:"/lobby/$matchId",params:{matchId:data.id}});}}><label className="block text-sm font-bold">Nome da pelada<Input className="mt-2" placeholder="Ex.: Pelada dos crias" maxLength={60} value={title} onChange={e=>setTitle(e.target.value)}/></label><div className="grid gap-5 sm:grid-cols-2"><label className="text-sm font-bold">Data e horário<Input className="mt-2" type="datetime-local" value={date} onChange={e=>setDate(e.target.value)}/></label><label className="text-sm font-bold">Local<Input className="mt-2" placeholder="Quadra, campo ou arena" maxLength={120} value={location} onChange={e=>setLocation(e.target.value)}/></label></div><SectionTitle>Modalidade</SectionTitle><div className="grid grid-cols-3 gap-3 sm:grid-cols-6">{MODALITIES.map(m=><Button type="button" key={m.id} variant={modality===m.id?"default":"secondary"} aria-pressed={modality===m.id} className="h-16 font-display text-2xl" onClick={()=>setModality(m.id)}>{m.id}</Button>)}</div><div className="flex items-center gap-4 border-y py-5"><Users className="size-8"/><div><p className="font-display text-3xl">{info.max} atletas</p><p className="text-xs text-muted-foreground">{info.size} por time · titulares, próxima e lista de espera</p></div></div><Button disabled={busy} className="sport-action w-full justify-between">{busy?"Criando…":"Abrir lobby da pelada"}<ArrowRight/></Button></form></AppShell>;}
+import { createFileRoute } from '@tanstack/react-router';
+import { AppShell, BackHome } from '@/components/AppShell';
+import { CreateMatchForm } from '@/components/match/CreateMatchForm';
+import { pageHead } from '@/lib/page-head';
+export const Route=createFileRoute('/_authenticated/match/create')({head:()=>pageHead('Criar pelada','Defina a modalidade, data e local e compartilhe sua pelada no WhatsApp.'),component:CreateMatch});
+function CreateMatch(){return <AppShell title="Nova pelada" back={<BackHome/>}><h1 className="mb-6 text-4xl">Criar pelada</h1><CreateMatchForm/></AppShell>;}

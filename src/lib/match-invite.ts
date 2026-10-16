@@ -1,0 +1,1 @@
+export function whatsappInvite(url: string, title: string) { return `https://wa.me/?text=${encodeURIComponent(`⚽ ${title}\nBora pro racha! Confirme sua presença no Súmula FC:\n${url}`)}`; }
