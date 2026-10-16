@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { CHAT_BLOCKED, chatTextAllowed, sanitizeChat } from '@/lib/chat-moderation';
-export function MatchChat({matchId,userId,allowed}:{matchId:string;userId?:string;allowed:boolean}) {
+export function MatchChat({matchId,userId,allowed}:{matchId:string;userId?:string|undefined;allowed:boolean}) {
   const [open,setOpen]=useState(false),[text,setText]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');const qc=useQueryClient();const end=useRef<HTMLDivElement>(null);
   const key=['match-chat',matchId,userId];
   const query=useQuery({queryKey:key,enabled:open&&allowed,refetchInterval:open&&allowed?5000:false,queryFn:async()=>{const {data,error}=await supabase.from('match_chat_messages').select('id,message,created_at,player_id,profile:profiles(apelido)').eq('match_id',matchId).order('created_at',{ascending:false}).order('id',{ascending:false}).limit(100);if(error)throw error;return (data??[]).reverse();}});
