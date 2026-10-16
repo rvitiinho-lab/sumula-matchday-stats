@@ -4,7 +4,7 @@ import { ArrowRight, Link2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { parseLobbyCode } from '@/routes/index';
+import { parseLobbyCode } from '@/lib/lobby-code';
 
 export function JoinByCode() {
   const navigate = useNavigate();
