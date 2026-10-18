@@ -14,6 +14,7 @@ import { accountQuery, matchQuery } from '@/lib/app-queries';
 import { inCurrentMonth, personalEvolution, roundDate } from '@/lib/home-insights';
 import { supabase } from '@/integrations/supabase/client';
 import { CreateMatchModal } from '@/components/match/CreateMatchModal';
+import { DuelList } from '@/components/duel/DuelList';
 
 export function HomePage() {
   const { data } = useSuspenseQuery(accountQuery());
@@ -29,6 +30,7 @@ export function HomePage() {
     <section className="flex items-center gap-4 pb-6 pt-1" aria-label="Meu atleta"><Link to="/profile" aria-label="Meu perfil" className="fut-avatar rounded-full"><Avatar name={data.profile.apelido} size={64} ring/></Link><div className="min-w-0 flex-1"><p className="text-[10px] font-extrabold uppercase text-muted-foreground">Salve, atleta</p><h1 className="mt-1 break-words text-3xl">{data.profile.apelido}</h1><div className="mt-2 flex items-center gap-1.5 text-[11px] font-bold text-primary"><Flame className="size-3.5 shrink-0"/><span>{evolution ? `${evolution.streak} ${evolution.streak === 1 ? 'semana seguida' : 'semanas seguidas'} no racha` : '—'}</span></div></div><div className="shrink-0 text-center"><span className="mb-1 block text-[10px] font-bold text-muted-foreground">OVR</span>{data.profile.overall_rating === null ? <span>—</span> : <OvrBadge value={data.profile.overall_rating}/>}</div></section>
     {next ? <NextMatch id={next.id} now={now} uid={data.user.id}/> : <section className="rounded-lg border border-primary/30 bg-card p-6"><p className="text-[10px] font-extrabold uppercase text-primary">Sua próxima pelada</p><h2 className="mt-4 text-3xl">O próximo jogo começa aqui.</h2></section>}
     <QuickActions matchId={next?.id}/>
+    <DuelList uid={data.user.id}/>
     {evolution && <UserEvolutionWidget evolution={evolution}/>}
     {now && <ResenhaGazette roots={roots} now={now}/>}
   </AppShell>;

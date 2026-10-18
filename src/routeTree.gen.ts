@@ -21,6 +21,7 @@ import { Route as AuthenticatedTournamentsRouteImport } from './routes/_authenti
 import { Route as AuthRegisterRouteImport } from './routes/auth.register'
 import { Route as LobbyMatchIdRouteImport } from './routes/lobby.$matchId'
 import { Route as AuthenticatedAthletePlayerIdRouteImport } from './routes/_authenticated/athlete.$playerId'
+import { Route as AuthenticatedDuelCreateRouteImport } from './routes/_authenticated/duel.create'
 import { Route as AuthenticatedMatchCreateRouteImport } from './routes/_authenticated/match.create'
 import { Route as AuthenticatedTournamentTournamentIdRouteImport } from './routes/_authenticated/tournament.$tournamentId'
 import { Route as MatchLiveMatchIdRouteImport } from './routes/match.live.$matchId'
@@ -88,6 +89,11 @@ const AuthenticatedAthletePlayerIdRoute =
     path: '/athlete/$playerId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDuelCreateRoute = AuthenticatedDuelCreateRouteImport.update({
+  id: '/duel/create',
+  path: '/duel/create',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMatchCreateRoute =
   AuthenticatedMatchCreateRouteImport.update({
     id: '/match/create',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/athlete/$playerId': typeof AuthenticatedAthletePlayerIdRoute
+  '/duel/create': typeof AuthenticatedDuelCreateRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
   '/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/athlete/$playerId': typeof AuthenticatedAthletePlayerIdRoute
+  '/duel/create': typeof AuthenticatedDuelCreateRoute
   '/match/create': typeof AuthenticatedMatchCreateRoute
   '/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/lobby/$matchId': typeof LobbyMatchIdRoute
   '/_authenticated/athlete/$playerId': typeof AuthenticatedAthletePlayerIdRoute
+  '/_authenticated/duel/create': typeof AuthenticatedDuelCreateRoute
   '/_authenticated/match/create': typeof AuthenticatedMatchCreateRoute
   '/_authenticated/tournament/$tournamentId': typeof AuthenticatedTournamentTournamentIdRoute
   '/match/live/$matchId': typeof MatchLiveMatchIdRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/lobby/$matchId'
     | '/athlete/$playerId'
+    | '/duel/create'
     | '/match/create'
     | '/tournament/$tournamentId'
     | '/match/live/$matchId'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/lobby/$matchId'
     | '/athlete/$playerId'
+    | '/duel/create'
     | '/match/create'
     | '/tournament/$tournamentId'
     | '/match/live/$matchId'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/lobby/$matchId'
     | '/_authenticated/athlete/$playerId'
+    | '/_authenticated/duel/create'
     | '/_authenticated/match/create'
     | '/_authenticated/tournament/$tournamentId'
     | '/match/live/$matchId'
@@ -326,6 +338,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAthletePlayerIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/duel/create': {
+      id: '/_authenticated/duel/create'
+      path: '/duel/create'
+      fullPath: '/duel/create'
+      preLoaderRoute: typeof AuthenticatedDuelCreateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/match/create': {
       id: '/_authenticated/match/create'
       path: '/match/create'
@@ -372,6 +391,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedResultsRoute: typeof AuthenticatedResultsRoute
   AuthenticatedTournamentsRoute: typeof AuthenticatedTournamentsRoute
   AuthenticatedAthletePlayerIdRoute: typeof AuthenticatedAthletePlayerIdRoute
+  AuthenticatedDuelCreateRoute: typeof AuthenticatedDuelCreateRoute
   AuthenticatedMatchCreateRoute: typeof AuthenticatedMatchCreateRoute
   AuthenticatedTournamentTournamentIdRoute: typeof AuthenticatedTournamentTournamentIdRoute
 }
@@ -384,6 +404,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedResultsRoute: AuthenticatedResultsRoute,
   AuthenticatedTournamentsRoute: AuthenticatedTournamentsRoute,
   AuthenticatedAthletePlayerIdRoute: AuthenticatedAthletePlayerIdRoute,
+  AuthenticatedDuelCreateRoute: AuthenticatedDuelCreateRoute,
   AuthenticatedMatchCreateRoute: AuthenticatedMatchCreateRoute,
   AuthenticatedTournamentTournamentIdRoute:
     AuthenticatedTournamentTournamentIdRoute,
