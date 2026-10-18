@@ -1,5 +1,6 @@
 # Súmula FC
-- [ ] Implementar seletor em Iniciar Súmula, Scout Solo com histórico/evolução/card e Duelo 1v1 com confirmação do desafiado, sem participação no Ranking — definir aprovação e notificações antes de construir.
+- [ ] Concluir e testar Duelo: escolha de atleta seguido, lances, confirmação, contestação, correção e nova confirmação; avisos no app e compartilhamento, fora do Ranking.
+- [ ] Implementar Scout Solo com histórico/evolução/card — fora do escopo desta retomada, dedicada ao Duelo.
 - [x] Implementar criação por modal no Início, compartilhamento WhatsApp, lobby com FIFO automático e chat moderado restrito aos participantes, com alterações mínimas autorizadas.
 - [x] Validar criação → link → titular automático → sorteio/início, chat salvo em duas telas, moderação no navegador e no banco, bloqueio anônimo e celular sem transbordamento; 90 testes passaram. Resultados e Ranking preservados.
 - [ ] Conferir chat, sorteio de mesário e fila entre atletas distintos — depende de segundo atleta real; duas telas da mesma conta e bloqueio anônimo já verificados.

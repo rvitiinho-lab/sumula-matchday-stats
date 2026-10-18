@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      duels: {
+        Row: {
+          confirmed_revision: number | null
+          created_at: string
+          creator_id: string
+          dispute_reason: string | null
+          finished_at: string | null
+          id: string
+          is_versus: boolean
+          opponent_id: string
+          revision: number
+          statistics: Json
+          status: string
+        }
+        Insert: {
+          confirmed_revision?: number | null
+          created_at?: string
+          creator_id: string
+          dispute_reason?: string | null
+          finished_at?: string | null
+          id?: string
+          is_versus?: boolean
+          opponent_id: string
+          revision?: number
+          statistics?: Json
+          status?: string
+        }
+        Update: {
+          confirmed_revision?: number | null
+          created_at?: string
+          creator_id?: string
+          dispute_reason?: string | null
+          finished_at?: string | null
+          id?: string
+          is_versus?: boolean
+          opponent_id?: string
+          revision?: number
+          statistics?: Json
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "duels_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "duels_opponent_id_fkey"
+            columns: ["opponent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_chat_messages: {
         Row: {
           created_at: string
@@ -751,6 +808,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      create_duel: { Args: { _opponent: string }; Returns: string }
       create_pelada: {
         Args: {
           _location?: string
@@ -792,6 +850,16 @@ export type Database = {
         }[]
       }
       next_pelada_round: { Args: { _match: string }; Returns: string }
+      operate_duel: {
+        Args: {
+          _action: string
+          _duel: string
+          _reason?: string
+          _revision: number
+          _statistics?: Json
+        }
+        Returns: undefined
+      }
       operate_match_clock: {
         Args: { _action: string; _match: string }
         Returns: undefined

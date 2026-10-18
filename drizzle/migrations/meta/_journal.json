@@ -92,6 +92,13 @@
       "when": 1792118859022,
       "tag": "0012_participant_lobby_chat_and_creation",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792305005139,
+      "tag": "0013_duel_confirmation_workflow",
+      "breakpoints": true
     }
   ]
 }

@@ -30,3 +30,4 @@
 - Home presentation lives in focused home components and pure insight helpers reusing unchanged account and pelada queries; why: personal indicators and news remain testable without changing storage or Results.
 - Creation uses a shared form and atomic create_pelada operation, with the lobby in MatchLobby and a scoped synchronization hook; why: modal and direct creation cannot diverge or partially save participation.
 - Lobby chat uses dedicated participant-scoped storage, database moderation and matching pure client checks; why: award messages remain untouched and browser bypasses cannot expose or send unauthorized chat.
+- Friendly duels use participant-only storage and revision-checked atomic operations, separate from competitive matches; why: corrections require fresh opponent approval and cannot affect ranking.
