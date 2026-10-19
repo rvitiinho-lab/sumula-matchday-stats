@@ -1,6 +1,7 @@
 // Executes the production migration in isolated PostgreSQL, never in the hosted database.
 import { PGlite } from '@electric-sql/pglite';
 import { readFileSync } from 'node:fs';
+import { Blob } from 'node:buffer';
 import { beforeAll, afterAll, describe, expect, it } from 'vitest';
 const creator = '11111111-1111-4111-8111-111111111111';
 const opponent = '22222222-2222-4222-8222-222222222222';
@@ -12,7 +13,7 @@ const create = async () => { await identity(creator); const r = await db.query<{
 const action = (id: string, name: string, revision: number, stats: unknown = null, reason: string | null = null) => db.query('SELECT public.operate_duel($1,$2,$3,$4::jsonb,$5)', [id, name, revision, stats ? JSON.stringify(stats) : null, reason]);
 const row = async (id: string) => (await db.query<{ status: string; revision: number; confirmed_revision: number | null; statistics: typeof statistics; finished_at: string | null }>('SELECT * FROM public.duels WHERE id=$1', [id])).rows[0];
 beforeAll(async () => {
-  db = new PGlite();
+  db = new PGlite({ fsBundle: new Blob([readFileSync(new URL('../../node_modules/@electric-sql/pglite/dist/pglite.data', import.meta.url))]) });
   await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role; CREATE SCHEMA auth; CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; GRANT USAGE ON SCHEMA auth TO authenticated; CREATE TABLE public.profiles(id uuid PRIMARY KEY); CREATE TABLE public.player_follows(follower_id uuid,player_id uuid); INSERT INTO public.profiles VALUES('${creator}'),('${opponent}'),('${outsider}'); INSERT INTO public.player_follows VALUES('${creator}','${opponent}');`);
   await db.exec(readFileSync(new URL('../../drizzle/migrations/0013_duel_confirmation_workflow.sql', import.meta.url), 'utf8'));
 }, 30000);
