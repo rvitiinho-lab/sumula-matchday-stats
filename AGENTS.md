@@ -31,3 +31,4 @@
 - Creation uses a shared form and atomic create_pelada operation, with the lobby in MatchLobby and a scoped synchronization hook; why: modal and direct creation cannot diverge or partially save participation.
 - Lobby chat uses dedicated participant-scoped storage, database moderation and matching pure client checks; why: award messages remain untouched and browser bypasses cannot expose or send unauthorized chat.
 - Friendly duels use participant-only storage and revision-checked atomic operations, separate from competitive matches; why: corrections require fresh opponent approval and cannot affect ranking.
+- Duel database tests run with `bunx vitest run --config vitest.duel.config.ts` in native Node while UI/pure tests use the default config; why: PostgreSQL WebAssembly requires native Blob support, not jsdom.

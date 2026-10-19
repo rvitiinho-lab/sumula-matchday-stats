@@ -24,7 +24,7 @@ export function DuelScreen({ id }: { id: string }) {
     if (['SAVE', 'SUBMIT'].includes(action) && !validStatistics(stats)) { toast.error('Use números inteiros entre 0 e 1000.'); return; }
     setBusy(true);
     try {
-      const { error } = await supabase.rpc('operate_duel', { _duel: id, _action: action, _revision: duel.revision, _statistics: ['SAVE', 'SUBMIT'].includes(action) ? stats : undefined, _reason: action === 'DISPUTE' ? reason : undefined });
+      const { error } = await supabase.rpc('operate_duel', { _duel: id, _action: action, _revision: duel.revision, ...(['SAVE', 'SUBMIT'].includes(action) ? { _statistics: stats } : {}), ...(action === 'DISPUTE' ? { _reason: reason } : {}) });
       if (error) throw error;
       setDraft(null); setReason('');
       await Promise.all([qc.invalidateQueries({ queryKey: ['duel', id] }), qc.invalidateQueries({ queryKey: ['duels'] })]);
