@@ -1,5 +1,6 @@
 # Súmula FC
-- [ ] Concluir e testar Duelo: escolha de atleta seguido, lances, confirmação, contestação, correção e nova confirmação; avisos no app e compartilhamento, fora do Ranking.
+- [x] Implementar Duelo: escolha de atleta seguido, lances, confirmação, contestação, correção e nova confirmação; avisos no app, WhatsApp, card e histórico, fora do Ranking. 98 testes existentes/puros e 9 testes de PostgreSQL isolado passaram.
+- [ ] Validar Duelo completo entre duas contas no app conectado — bloqueado: existe somente um atleta cadastrado; entrada autenticada, histórico e tela celular já conferidos, sem erros.
 - [ ] Implementar Scout Solo com histórico/evolução/card — fora do escopo desta retomada, dedicada ao Duelo.
 - [x] Implementar criação por modal no Início, compartilhamento WhatsApp, lobby com FIFO automático e chat moderado restrito aos participantes, com alterações mínimas autorizadas.
 - [x] Validar criação → link → titular automático → sorteio/início, chat salvo em duas telas, moderação no navegador e no banco, bloqueio anônimo e celular sem transbordamento; 90 testes passaram. Resultados e Ranking preservados.
