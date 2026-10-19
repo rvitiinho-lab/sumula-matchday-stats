@@ -13,11 +13,11 @@ const create = async () => { await identity(creator); const r = await db.query<{
 const action = (id: string, name: string, revision: number, stats: unknown = null, reason: string | null = null) => db.query('SELECT public.operate_duel($1,$2,$3,$4::jsonb,$5)', [id, name, revision, stats ? JSON.stringify(stats) : null, reason]);
 const row = async (id: string) => (await db.query<{ status: string; revision: number; confirmed_revision: number | null; statistics: typeof statistics; finished_at: string | null }>('SELECT * FROM public.duels WHERE id=$1', [id])).rows[0];
 beforeAll(async () => {
-  db = new PGlite({ fsBundle: new Blob([readFileSync(new URL('../../node_modules/@electric-sql/pglite/dist/pglite.data', import.meta.url))]) });
+  db = new PGlite({ fsBundle: new Blob([readFileSync('node_modules/@electric-sql/pglite/dist/pglite.data')]) });
   await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role; CREATE SCHEMA auth; CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql AS $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; GRANT USAGE ON SCHEMA auth TO authenticated; CREATE TABLE public.profiles(id uuid PRIMARY KEY); CREATE TABLE public.player_follows(follower_id uuid,player_id uuid); INSERT INTO public.profiles VALUES('${creator}'),('${opponent}'),('${outsider}'); INSERT INTO public.player_follows VALUES('${creator}','${opponent}');`);
-  await db.exec(readFileSync(new URL('../../drizzle/migrations/0013_duel_confirmation_workflow.sql', import.meta.url), 'utf8'));
+  await db.exec(readFileSync('drizzle/migrations/0013_duel_confirmation_workflow.sql', 'utf8'));
 }, 30000);
-afterAll(async () => { await db.close(); });
+afterAll(async () => { await db?.close(); });
 describe('Duelo: autorização e revisão no PostgreSQL', () => {
   it('confirma apenas a revisão reenviada após contestação e correção', async () => {
     const id = await create(); await action(id, 'SUBMIT', 0, statistics);
