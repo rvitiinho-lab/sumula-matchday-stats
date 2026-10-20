@@ -27,7 +27,7 @@
 - Competitive ranking is derived by an authenticated database read function and independently tested pure scoring helpers; why: rankings cannot accept browser-supplied scores or alter MVP and OVR.
 - Organizer corrections use an audited operation and event writes reuse a stable operation ID; why: legitimate corrections remain available while direct counter edits and retry duplicates cannot silently affect competitive results.
 - Ranking components and scoped query hook are separate from match screens, with authenticated read-only athlete profiles; why: future ranking scopes can reuse data and presentation without expanding editing permissions.
-- Home presentation lives in focused home components and pure insight helpers reusing unchanged account and pelada queries; why: personal indicators and news remain testable without changing storage or Results.
+- Home presentation and profile evolution reuse pure insight helpers and unchanged account/pelada queries, while the Ranking tab container reuses the existing duel lists; why: presentation can move between screens without changing scoring, storage or Results.
 - Creation uses a shared form and atomic create_pelada operation, with the lobby in MatchLobby and a scoped synchronization hook; why: modal and direct creation cannot diverge or partially save participation.
 - Lobby chat uses dedicated participant-scoped storage, database moderation and matching pure client checks; why: award messages remain untouched and browser bypasses cannot expose or send unauthorized chat.
 - Friendly duels use participant-only storage and revision-checked atomic operations, separate from competitive matches; why: corrections require fresh opponent approval and cannot affect ranking.
