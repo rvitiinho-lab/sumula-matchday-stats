@@ -1,20 +1,18 @@
 import { Link } from '@tanstack/react-router';
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Check, Clock3, Flame, Plus, X } from 'lucide-react';
+import { ArrowUpRight, Check, Clock3, Plus, X } from 'lucide-react';
 import { toast } from 'sonner';
-import { AppShell, Avatar, OvrBadge } from '@/components/AppShell';
+import { AppShell } from '@/components/AppShell';
 import { MatchDetails } from '@/components/MatchUI';
 import { Button } from '@/components/ui/button';
 import { JoinByCode } from './JoinByCode';
 import { QuickActions } from './QuickActions';
-import { UserEvolutionWidget } from './UserEvolutionWidget';
 import { ResenhaGazette } from './ResenhaGazette';
 import { accountQuery, matchQuery } from '@/lib/app-queries';
-import { inCurrentMonth, personalEvolution, roundDate } from '@/lib/home-insights';
+import { inCurrentMonth, roundDate } from '@/lib/home-insights';
 import { supabase } from '@/integrations/supabase/client';
 import { CreateMatchModal } from '@/components/match/CreateMatchModal';
-import { DuelList } from '@/components/duel/DuelList';
 
 export function HomePage() {
   const { data } = useSuspenseQuery(accountQuery());
@@ -22,16 +20,12 @@ export function HomePage() {
   const [createOpen, setCreateOpen] = useState(false);
   useEffect(() => { setNow(new Date()); const timer = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(timer); }, []);
   const next = [...data.matches].filter(m => m.status !== 'finished' && !m.pelada_closed).sort((a,b) => Number(b.status === 'in_progress') - Number(a.status === 'in_progress') || (a.scheduled_at ?? '9999').localeCompare(b.scheduled_at ?? '9999'))[0];
-  const evolution = now ? personalEvolution(data.stats.map(s => ({ ...s, goals: s.goals ?? 0, assists: s.assists ?? 0, victory_points: s.victory_points ?? 0, presence: s.presence ?? 'pending' })), data.matches, data.mvps, now) : null;
   const roots = now ? [...new Set(data.matches.filter(m => m.status === 'finished' && inCurrentMonth(roundDate(m), now)).map(m => m.pelada_id ?? m.id))] : [];
   return <AppShell>
     <CreateMatchModal open={createOpen} onOpenChange={setCreateOpen}/>
     <div className="mb-5 flex flex-col gap-3 sm:flex-row"><div className="flex-1"><JoinByCode/></div><Button className="sport-action h-auto min-h-12" onClick={() => setCreateOpen(true)}><Plus/>Criar Pelada</Button></div>
-    <section className="flex items-center gap-4 pb-6 pt-1" aria-label="Meu atleta"><Link to="/profile" aria-label="Meu perfil" className="fut-avatar rounded-full"><Avatar name={data.profile.apelido} size={64} ring/></Link><div className="min-w-0 flex-1"><p className="text-[10px] font-extrabold uppercase text-muted-foreground">Salve, atleta</p><h1 className="mt-1 break-words text-3xl">{data.profile.apelido}</h1><div className="mt-2 flex items-center gap-1.5 text-[11px] font-bold text-primary"><Flame className="size-3.5 shrink-0"/><span>{evolution ? `${evolution.streak} ${evolution.streak === 1 ? 'semana seguida' : 'semanas seguidas'} no racha` : '—'}</span></div></div><div className="shrink-0 text-center"><span className="mb-1 block text-[10px] font-bold text-muted-foreground">OVR</span>{data.profile.overall_rating === null ? <span>—</span> : <OvrBadge value={data.profile.overall_rating}/>}</div></section>
     {next ? <NextMatch id={next.id} now={now} uid={data.user.id}/> : <section className="rounded-lg border border-primary/30 bg-card p-6"><p className="text-[10px] font-extrabold uppercase text-primary">Sua próxima pelada</p><h2 className="mt-4 text-3xl">O próximo jogo começa aqui.</h2></section>}
     <QuickActions matchId={next?.id}/>
-    <DuelList uid={data.user.id}/>
-    {evolution && <UserEvolutionWidget evolution={evolution}/>}
     {now && <ResenhaGazette roots={roots} now={now}/>}
   </AppShell>;
 }

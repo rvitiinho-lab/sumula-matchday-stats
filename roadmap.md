@@ -1,4 +1,6 @@
 # Súmula FC
+- [ ] Redistribuir Início/Perfil/Ranking: evolução real abaixo da carta, duelos ativos e histórico em abas do Ranking, Gazeta compacta; preservar Resultados e dados.
+- [ ] Conferir redistribuição e navegação autenticada no computador/celular, além dos testes existentes de evolução e duelos.
 - [x] Implementar Duelo: escolha de atleta seguido, lances, confirmação, contestação, correção e nova confirmação; avisos no app, WhatsApp, card e histórico, fora do Ranking. 98 testes existentes/puros e 9 testes de PostgreSQL isolado passaram.
 - [ ] Validar Duelo completo entre duas contas no app conectado — bloqueado: existe somente um atleta cadastrado; entrada autenticada, histórico e tela celular já conferidos, sem erros.
 - [ ] Implementar Scout Solo com histórico/evolução/card — fora do escopo desta retomada, dedicada ao Duelo.

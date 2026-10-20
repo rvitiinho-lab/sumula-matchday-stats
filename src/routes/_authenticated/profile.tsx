@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Save, LogOut, Download, Trophy, Target, Hand, Shield, Footprints, CalendarDays, LockKeyhole, Check } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, SectionTitle } from "@/components/AppShell";
@@ -8,6 +8,8 @@ import { PageError, PageMissing } from "@/components/MatchUI";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PlayerFutCard } from "@/components/profile/PlayerFutCard";
+import { UserEvolutionWidget } from "@/components/home/UserEvolutionWidget";
+import { personalEvolution } from "@/lib/home-insights";
 import { careerAchievements, type CareerStats } from "@/lib/profile-achievements";
 import { exportProfileCard } from "@/lib/profile-card";
 import { accountQuery } from "@/lib/app-queries";
@@ -17,6 +19,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/profile")({ head: () => pageHead("Meu perfil de atleta", "Sua carta Súmula FC, estatísticas reais, conquistas e frase da resenha."), loader: ({ context }) => context.queryClient.ensureQueryData(accountQuery()), component: ProfilePage, errorComponent: PageError, notFoundComponent: PageMissing });
 function ProfilePage() {
   const { data } = useSuspenseQuery(accountQuery());
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => { setNow(new Date()); }, []);
+  const evolution = now ? personalEvolution(data.stats.map(s => ({ ...s, goals: s.goals ?? 0, assists: s.assists ?? 0, victory_points: s.victory_points ?? 0, presence: s.presence ?? 'pending' })), data.matches, data.mvps, now) : null;
   const [nome, setNome] = useState(data.profile.nome), [apelido, setApelido] = useState(data.profile.apelido), [position, setPosition] = useState(data.profile.position), [quote, setQuote] = useState(data.profile.quote || "");
   const [busy, setBusy] = useState(false), [exporting, setExporting] = useState(false);
   const qc = useQueryClient(), navigate = useNavigate();
@@ -31,6 +36,7 @@ function ProfilePage() {
       <PlayerFutCard profile={{ ...data.profile, quote }} />
       <Button className="sport-action mx-auto mt-5 flex w-full max-w-sm" disabled={exporting} onClick={async () => { setExporting(true); try { await exportProfileCard({ ...data.profile, quote }, stats); } catch { toast.error("Não foi possível exportar sua carta."); } finally { setExporting(false); } }}><Download />{exporting ? "Preparando carta…" : "Exportar carta para Stories"}</Button>
     </section>
+    {evolution && <UserEvolutionWidget evolution={evolution}/>}
     <SectionTitle>Estatísticas da carreira</SectionTitle>
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{metrics.map(({ key, label, icon: Icon }) => <article className="profile-stat" key={key}><div className="flex items-center justify-between gap-2"><Icon className="size-4 text-primary" /><span className="text-[10px] font-extrabold uppercase text-muted-foreground">{label}</span></div><p className="mt-4 font-display text-4xl leading-none">{stats[key]}</p></article>)}</div>
     <SectionTitle right={<span className="text-xs font-bold text-primary">{unlocked}/{achievements.length}</span>}>Galeria de conquistas</SectionTitle>
